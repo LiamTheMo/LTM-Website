@@ -195,10 +195,10 @@ Important commands:
 npm run build
 npm run build:worker
 npm run preview
-npx wrangler deploy
+npx opennextjs-cloudflare deploy
 ```
 
-Production deployment is performed by `.github/workflows/deploy.yml` after validation. `npm run build:worker` must produce `.open-next/worker.js` and `.open-next/assets` before the final OpenNext Cloudflare deploy step.
+Cloudflare Workers Builds must use `npm run build:worker` as its build command and `npx opennextjs-cloudflare deploy` as its deploy command. The build must produce `.open-next/worker.js` and `.open-next/assets` before deployment. Do not run a plain `next build` followed by `wrangler deploy`.
 
 Do not expose Cloudflare secrets or GitHub tokens through `NEXT_PUBLIC_*` variables or client bundles.
 
