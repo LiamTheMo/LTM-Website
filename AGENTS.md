@@ -89,32 +89,29 @@ Each redesign phase increments the version by `0.01`:
 
 ## 4. Deployment ownership — mandatory
 
-There is exactly **one automated production deployment owner: GitHub Actions**.
+Production deployment is owned by Cloudflare's automatic Git integration.
 
 ### Production deployment
 
-- `.github/workflows/deploy.yml` deploys only from `main` (or explicit manual dispatch).
-- A deliberate merge/push to `main` is the production release event.
-- Version branches and minor working branches never deploy automatically.
-- The workflow installs the lockfile, injects optional private production bindings, audits production dependencies, lints, generates Cloudflare types, builds the OpenNext Worker, typechecks, verifies Cloudflare credentials, and then deploys the already-built Worker.
-- Cloudflare credentials/resource identifiers must stay in GitHub/Cloudflare secrets and must never be committed.
-- The retired Cloudflare Git build integration must remain disabled so a `main` push cannot trigger a second independent deployment path.
+- Cloudflare's automatic Git integration deploys production from `main`.
+- GitHub Actions must not deploy, publish, or otherwise update production.
+- Keep deployment credentials out of GitHub Actions because Actions has no deployment role.
 
 ### Pull-request validation
 
-`.github/workflows/ci.yml` validates pull requests targeting `main` or version branches matching `v*`. It must never deploy.
+`.github/workflows/ci.yml` validates pull requests targeting permanent version branches matching `vX.XX` only. It must never run for `main` or deploy.
 
 ### Version and minor branches
 
 - Minor branches never deploy.
 - Version branches are permanent development/release milestones and do not automatically deploy.
-- After validated work is merged into the active version branch, open a release pull request from that version branch to `main` so Liam can visually verify the change on the deployed site.
+- After validated work is merged into the active version branch, merge the version branch into `main` to let Cloudflare's Git integration deploy it for visual verification.
 - Treat this main release as the default final step for every completed change unless Liam explicitly says to keep the change off production.
 - Production changes only when completed version work is intentionally released to `main`.
 
 ### Manual deployment
 
-`npm run deploy` may be used only when the user explicitly requests a manual deployment. Normal production delivery goes through the main-only GitHub Actions workflow.
+Production deployment is managed by Cloudflare's automatic Git integration. Do not add GitHub Actions deployment steps.
 
 ## 5. Phase workflow
 
