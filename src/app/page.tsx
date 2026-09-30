@@ -17,12 +17,12 @@ export const metadata: Metadata = {
   openGraph: {
     type: "website",
     url: "/",
-    title: "Liam Mo — Software Developer",
+    title: "Liam Mo — Fullstack Developer",
     description: profileContent.intro,
   },
   twitter: {
     card: "summary_large_image",
-    title: "Liam Mo — Software Developer",
+    title: "Liam Mo — Fullstack Developer",
     description: profileContent.intro,
   },
   robots: { index: true, follow: true },

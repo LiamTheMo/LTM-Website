@@ -50,7 +50,7 @@ The contact flow and Cloudflare deployment setup provide useful infrastructure f
 
 ### 1. Identity mismatch
 
-The first impression is “designer/developer services site,” not “Liam Mo’s software developer portfolio.”
+The first impression is “designer/developer services site,” not “Liam Mo’s fullstack developer portfolio.”
 
 ### 2. Inconsistent visual rhythm
 
@@ -83,9 +83,9 @@ The current homepage metadata contains `robots: { index: false, follow: false }`
 
 ## Recommended Positioning
 
-Primary title: **Software Developer**
+Primary title: **Fullstack Developer**
 
-Reasoning: it accurately covers the broad portfolio—web/full-stack development, games, automation, tooling, and software projects—without making one specialty appear to be the entire identity.
+Reasoning: it foregrounds Liam's end-to-end web development focus while still representing the wider portfolio—games, automation, tooling, and software projects.
 
 ## Target Outcome
 
