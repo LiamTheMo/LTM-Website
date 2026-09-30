@@ -7,7 +7,6 @@ const FEATURED_REPOSITORY_NAMES = [
   "LTM-Todo-App",
   "LTM-Email-Service",
   "LTM-Website",
-  "HYSB-Bazaar-Tracker",
 ] as const;
 
 const githubHeaders = {
