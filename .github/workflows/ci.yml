@@ -3,7 +3,6 @@ name: CI
 on:
   pull_request:
     branches:
-      - main
       - "v[0-9]+.[0-9][0-9]"
 
 permissions:
@@ -42,8 +41,7 @@ jobs:
       - name: Generate Cloudflare types
         run: npm run cf-typegen
 
-      # Validate the same OpenNext worker artifact production deploys.
-      # This generates .open-next/worker.js but does not upload or deploy it.
+      # Validate the OpenNext worker artifact without uploading or deploying it.
       - name: Build OpenNext worker
         run: npm run build:worker
 
