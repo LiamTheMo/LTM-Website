@@ -4,7 +4,7 @@ This document tracks the release state of the portfolio redesign. `v2.12` is the
 
 ## Code-complete launch work
 
-- Shared site metadata is aligned to `Liam Mo — Software Developer`.
+- Shared site metadata is aligned to `Liam Mo — Fullstack Developer`.
 - Canonical URLs are defined for the homepage and primary public routes.
 - Open Graph/Twitter metadata uses the personal developer portfolio positioning.
 - Person + WebSite structured data is emitted server-side.

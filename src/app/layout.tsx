@@ -19,7 +19,7 @@ const bricolage = Bricolage_Grotesque({
 });
 
 const siteDescription =
-  "Personal software developer portfolio featuring web applications, games, automation, tooling, experience, and technical projects.";
+  "Personal fullstack developer portfolio featuring web applications, games, automation, tooling, experience, and technical projects.";
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://liamthemo.com"),
