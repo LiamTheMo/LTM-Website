@@ -47,9 +47,9 @@ Behavior:
 
 Use one primary title:
 
-**Software Developer**
+**Fullstack Developer**
 
-This title is intentionally broader than “Full-Stack Developer” or “Game Developer” because the portfolio spans web/full-stack development, games, automation, tooling, and software projects.
+This title foregrounds end-to-end web development while the portfolio also showcases games, automation, tooling, and other software projects.
 
 ### About copy
 
@@ -57,7 +57,7 @@ Keep this short enough to scan in a few seconds. It should mention the mix of wo
 
 Draft content direction:
 
-> I’m a software developer focused on building useful, polished software across web applications, games, automation, and developer tools. I enjoy taking projects from an early idea through implementation, deployment, and iteration, with an emphasis on clean systems and practical user experience.
+> I’m a fullstack developer focused on building useful, polished web applications and end-to-end software. My work also spans games, automation, and developer tools, and I enjoy taking projects from an early idea through implementation, deployment, and iteration.
 
 Final wording can be refined after the surrounding page is implemented.
 

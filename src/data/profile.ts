@@ -11,7 +11,7 @@ export interface ProfileContent {
 
 export const profileContent: ProfileContent = {
   intro:
-    "I’m a software developer focused on building useful, polished software across web applications, games, automation, and developer tools. I enjoy taking projects from an early idea through implementation, deployment, and iteration, with an emphasis on clean systems and practical user experience.",
+    "I’m a fullstack developer focused on building useful, polished web applications and end-to-end software. My work also spans games, automation, and developer tools, and I enjoy taking projects from an early idea through implementation, deployment, and iteration.",
   image: { src: "/homepage/profile/profile-photo.avif", alt: "Portrait of Liam Mo" },
   resumeHref: "/resume",
 };

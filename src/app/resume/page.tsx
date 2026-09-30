@@ -15,7 +15,7 @@ export default function ResumePage() {
       <PageHero
         id="resume-heading"
         eyebrow="Resume"
-        title="Liam Mo — Software Developer"
+        title="Liam Mo — Fullstack Developer"
         description="The public resume file is being finalized. This route is stable so the homepage action and future PDF can keep the same destination."
         actions={
           <>

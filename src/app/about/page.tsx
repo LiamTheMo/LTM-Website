@@ -12,14 +12,14 @@ import { featuredSkills } from "@/data/skills";
 export const metadata: Metadata = {
   title: "About",
   description:
-    "More about Liam Mo, a software developer and computer science student in Calgary building web applications, games, automation, and developer tools.",
+    "More about Liam Mo, a fullstack developer and computer science student in Calgary building web applications, games, automation, and developer tools.",
   alternates: { canonical: "/about" },
   openGraph: {
     type: "website",
     url: "/about",
     title: "About — Liam Mo",
     description:
-      "More about Liam Mo, a software developer and computer science student in Calgary building web applications, games, automation, and developer tools.",
+      "More about Liam Mo, a fullstack developer and computer science student in Calgary building web applications, games, automation, and developer tools.",
   },
 };
 
