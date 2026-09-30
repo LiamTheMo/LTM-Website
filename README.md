@@ -47,7 +47,7 @@ This repository uses version branches as stable major branches.
 - Create a minor working branch from the current major branch for every feature, fix, cleanup, or documentation task.
 - Complete and validate the work on the minor branch, then merge it back into the same major branch.
 - Minor branches must not introduce deployment triggers that can deploy from the minor branch.
-- Production deployment is restricted to `main` by the GitHub Actions deployment workflow.
+- Production deployment is managed by Cloudflare's automatic Git integration from `main`; GitHub Actions must not deploy.
 - When a phase is complete, the next phase begins from a new major branch with the version incremented by `0.01`.
 
 Example:
@@ -110,7 +110,7 @@ The Phase 8 footer supports an anonymous unique-browser approximation using a Cl
 
 The counter stores only one aggregate integer. A first-party HttpOnly cookie prevents the same browser from incrementing the total again for approximately one year; no IP address, email, device fingerprint, or visitor identifier is stored in D1. The increment is a single atomic SQLite upsert, and the API disables caching so the stat remains current even when the homepage itself is cached.
 
-To enable the counter in production without exposing the D1 resource ID in this public repository, configure the GitHub `production` environment secrets `CLOUDFLARE_VISITOR_DB_NAME` and `CLOUDFLARE_VISITOR_DB_ID`. The production deployment workflow injects that binding only into its temporary checkout before building and deploying. If both secrets are omitted, the site deploys without the optional binding and the footer degrades to `Visitor count unavailable`.
+To enable the counter in production without exposing the D1 resource ID in this public repository, configure the GitHub `production` environment secrets `CLOUDFLARE_VISITOR_DB_NAME` and `CLOUDFLARE_VISITOR_DB_ID`. Configure the binding in the Cloudflare build environment when needed. If both secrets are omitted, the site deploys without the optional binding and the footer degrades to `Visitor count unavailable`.
 
 ## Project structure
 
@@ -137,45 +137,15 @@ Legacy mockups and the old `CLAUDE.md`, `DEPLOYMENT.md`, and `TODO.md` documents
 
 ## Deployment
 
-There is **one intended automated production deployment owner: GitHub Actions**.
+Production deployment is managed by Cloudflare's automatic Git integration from `main`.
 
-### Production workflow
+### Deployment workflow
 
-`.github/workflows/deploy.yml` runs only when `main` is pushed/merged or when the workflow is explicitly dispatched manually. Version branches and minor working branches cannot trigger it.
-
-The workflow:
-
-1. Checks out the exact commit with persisted Git credentials disabled.
-2. Installs the locked npm dependency graph with `npm ci`.
-3. Injects the optional `VISITOR_DB` D1 binding from GitHub secrets without committing its resource identifiers.
-4. Audits production dependencies for high/critical known vulnerabilities.
-5. Runs linting and Cloudflare type generation.
-6. Builds the OpenNext Worker and runs TypeScript validation.
-7. Authenticates to Cloudflare only for the final deployment step and deploys the already-built Worker.
-
-GitHub Action dependencies are pinned to immutable full commit SHAs rather than mutable version tags.
-
-### Required GitHub secrets
-
-Store deployment credentials in the GitHub **`production` environment** rather than in source files:
-
-- `CLOUDFLARE_API_TOKEN` — a narrowly scoped Cloudflare API token with only the permissions/resources required to deploy this Worker.
-- `CLOUDFLARE_ACCOUNT_ID` — the account that owns the Worker.
-
-Optional visitor-counter secrets must be configured as a pair:
-
-- `CLOUDFLARE_VISITOR_DB_NAME`
-- `CLOUDFLARE_VISITOR_DB_ID`
-
-The quote-form Discord webhook is a Cloudflare Worker runtime secret named `DISCORD_WEBHOOK_URL`. `wrangler.jsonc` declares it as required but never contains its value. Wrangler does not delete encrypted Worker secrets during a normal deploy.
-
-### Deployment ownership safeguard
-
-GitHub Actions is the sole intended automated production deployment path. Keep the retired Cloudflare Workers Git build integration disconnected so a push to `main` cannot trigger a second independent deployment.
+Cloudflare's automatic Git integration is the only production deployment path. Keep GitHub Actions deployment workflows removed. GitHub Actions must never deploy or publish production.
 
 ### Pull-request validation
 
-`.github/workflows/ci.yml` runs for pull requests targeting `main` or version branches matching `v*`. It installs dependencies, runs a production dependency audit, lints, generates Cloudflare types, builds the OpenNext Worker, and typechecks. It never deploys.
+`.github/workflows/ci.yml` runs for pull requests targeting permanent version branches matching `vX.XX` only. It installs dependencies, runs a production dependency audit, lints, generates Cloudflare types, builds the OpenNext Worker, and typechecks. It never runs on `main` or deploys.
 
 ### Version branches
 
@@ -198,8 +168,8 @@ This repository is intentionally public, so source code must never be treated as
 - `.env*`, `.dev.vars*`, private keys, Wrangler local state, and build output are ignored by Git.
 - Cloudflare credentials and private D1 identifiers are supplied through GitHub/Cloudflare secrets, not committed files.
 - `wrangler.jsonc` declares required secret names without storing values and preserves dashboard-managed non-secret variables during deployments.
-- GitHub Actions use explicit least-privilege permissions and immutable action SHAs.
-- CodeQL scans `main` and runs weekly.
+- GitHub Actions validation workflows use explicit least-privilege permissions and immutable action SHAs.
+- CodeQL scans only permanent version branches; it never runs on `main`.
 - Dependabot checks npm and GitHub Actions dependencies weekly.
 - CI blocks pull requests with high/critical production dependency audit findings.
 - Public POST endpoints validate origin/request shape, and the quote webhook code avoids logging secret-bearing network errors.
