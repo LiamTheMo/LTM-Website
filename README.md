@@ -73,7 +73,7 @@ v3.00 finalized
 | Adapter | `@opennextjs/cloudflare` |
 | Worker tooling | Wrangler 4 |
 | CI | GitHub Actions |
-| Production deployment | GitHub Actions → Cloudflare Workers |
+| Production deployment | Cloudflare automatic Git integration → Cloudflare Workers |
 | Security scanning | CodeQL, npm audit, Dependabot |
 
 ## Local development
@@ -110,7 +110,7 @@ The Phase 8 footer supports an anonymous unique-browser approximation using a Cl
 
 The counter stores only one aggregate integer. A first-party HttpOnly cookie prevents the same browser from incrementing the total again for approximately one year; no IP address, email, device fingerprint, or visitor identifier is stored in D1. The increment is a single atomic SQLite upsert, and the API disables caching so the stat remains current even when the homepage itself is cached.
 
-To enable the counter in production without exposing the D1 resource ID in this public repository, configure the GitHub `production` environment secrets `CLOUDFLARE_VISITOR_DB_NAME` and `CLOUDFLARE_VISITOR_DB_ID`. Configure the binding in the Cloudflare build environment when needed. If both secrets are omitted, the site deploys without the optional binding and the footer degrades to `Visitor count unavailable`.
+The production `VISITOR_DB` binding must be configured in Cloudflare's deployment settings when the counter is enabled. Without that binding, the footer degrades to `Visitor count unavailable`.
 
 ## Project structure
 
@@ -121,7 +121,7 @@ src/data/                 Structured portfolio, project, and site content
 src/lib/                  Shared utilities, types, navigation, and server logic
 public/                    Static assets
 docs/portfolio-revamp/    Completed redesign specification, audits, and phase documents
-.github/workflows/         PR validation, production deployment, security scanning
+.github/workflows/         version-branch validation and security scanning
 ```
 
 ## Portfolio revamp documents
@@ -151,15 +151,7 @@ Cloudflare's automatic Git integration is the only production deployment path. K
 
 Branches such as `v2.01`, `v2.12`, `v3.00`, and later versions are permanent development/release milestones. They do not automatically deploy to production. Production changes are released only when intentionally merged/pushed to `main`.
 
-### Manual deployment
-
-For an explicitly requested local manual deployment:
-
-```bash
-npm run deploy
-```
-
-Use the same narrowly scoped Cloudflare credentials and ensure any required production resource bindings are present before deploying.
+Production releases are deployed automatically by Cloudflare when changes are merged into `main`. Version branches and minor working branches must not deploy to production.
 
 ## Public-repository security
 
