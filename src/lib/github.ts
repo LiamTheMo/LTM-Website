@@ -4,6 +4,7 @@ const GITHUB_PROFILE_URL = `https://github.com/${GITHUB_USERNAME}`;
 const GITHUB_CONTRIBUTIONS_URL = `https://github.com/users/${GITHUB_USERNAME}/contributions`;
 const GITHUB_REVALIDATE_SECONDS = 60 * 60;
 const FEATURED_REPOSITORY_NAMES = [
+  "LTM-Todo-App",
   "LTM-Email-Service",
   "LTM-Website",
   "HYSB-Bazaar-Tracker",
