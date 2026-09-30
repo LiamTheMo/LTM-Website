@@ -8,7 +8,7 @@ export interface SiteNavigationItem {
 export const siteIdentity = {
   name: "Liam Mo",
   handle: "LiamTheMo",
-  title: "Software Developer",
+  title: "Fullstack Developer",
   location: "Calgary, Alberta",
 } as const;
 

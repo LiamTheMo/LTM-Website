@@ -8,9 +8,9 @@ The site should feel intentionally designed as one system. Typography, color, sp
 
 ## Portfolio Positioning
 
-**Primary title: Software Developer**
+**Primary title: Fullstack Developer**
 
-This is the broadest accurate umbrella for the site. It includes web/full-stack work, game development, automation, tooling, and software projects without forcing the portfolio into only one specialty.
+This foregrounds Liam's end-to-end web development work while leaving room for the broader portfolio of games, automation, tooling, and software projects.
 
 Supporting specialties can appear in copy and project tags, for example:
 
@@ -26,7 +26,7 @@ Supporting specialties can appear in copy and project tags, for example:
    - profile photo
    - full name
    - GitHub / LinkedIn / contact icons
-   - title: Software Developer
+   - title: Fullstack Developer
    - short introduction/about copy
    - resume button
 3. Featured Projects

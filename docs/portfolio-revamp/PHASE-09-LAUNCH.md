@@ -87,7 +87,7 @@ Remove or rewrite stale service-first language that conflicts with the portfolio
 
 Confirm:
 
-- title is `Software Developer`
+- title is `Fullstack Developer`
 - homepage section order matches the master plan
 - placeholder resume remains excluded from indexing until final content is supplied
 - experience/education dates are current

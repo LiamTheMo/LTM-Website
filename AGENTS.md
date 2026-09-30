@@ -16,7 +16,7 @@ These instructions apply to all automated coding work in this repository.
 
 `LTM-Website` is Liam Mo's personal portfolio at `liamthemo.com`.
 
-The launched site is a personal **Software Developer** portfolio centered on:
+The launched site is a personal **Fullstack Developer** portfolio centered on:
 
 - profile identity and contact links
 - featured software/game/automation projects

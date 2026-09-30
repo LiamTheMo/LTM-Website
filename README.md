@@ -4,7 +4,7 @@ Personal portfolio website for **Liam Mo**, built around software development, p
 
 **Live site:** https://liamthemo.com
 
-The former service-first site has been rebuilt as a personal developer portfolio. The primary positioning is **Software Developer**, with supporting work across full-stack development, game development, automation, tooling, and UI implementation. The v3.00 line is the finalized portfolio baseline, with only owner-supplied photos and the final resume still being added as content polish.
+The former service-first site has been rebuilt as Liam Mo's personal fullstack developer portfolio. The primary positioning is **Fullstack Developer**, supported by work across web applications, games, automation, tooling, and UI implementation. The v3.00 line is the finalized portfolio baseline, with only owner-supplied photos and the final resume still being added as content polish.
 
 ## Current development line
 
