@@ -143,6 +143,8 @@ Production deployment is managed by Cloudflare's automatic Git integration from 
 
 Cloudflare's automatic Git integration is the only production deployment path. Keep GitHub Actions deployment workflows removed. GitHub Actions must never deploy or publish production.
 
+For Cloudflare Workers Builds, set the build command to `npm run build:worker` and the deploy command to `npx opennextjs-cloudflare deploy`. A plain `npm run build` only creates the Next.js output; deployment requires the OpenNext Worker output first.
+
 ### Pull-request validation
 
 `.github/workflows/ci.yml` runs for pull requests targeting permanent version branches matching `vX.XX` only. It installs dependencies, runs a production dependency audit, lints, generates Cloudflare types, builds the OpenNext Worker, and typechecks. It never runs on `main` or deploys.
