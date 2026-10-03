@@ -153,7 +153,7 @@ export const projects: Project[] = [
     solution:
       "The app combines fast task capture, chronological planning, due dates, and planned-work blocks. It stores data locally in the browser with IndexedDB; Web Push reminders use a per-browser queue. There are currently no accounts or cross-device task sync.",
     sourceUrl: "https://github.com/OrangeCheasy/LTM-Todo-App",
-    stack: ["TypeScript", "Next.js", "IndexedDB", "Cloudflare"],
+    stack: ["TypeScript", "Next.js", "React", "IndexedDB", "Cloudflare"],
     icon: "✓",
     featured: true,
   },
@@ -209,6 +209,37 @@ export const projects: Project[] = [
     // would promise gameplay and deliver the same marketing art. Add real
     // gameplay screenshots here when they're taken; the cover stays as it is.
     // featured: true — one of the mockup's three home-page picks (the evidence-based content rules Phase 2).
+    featured: false,
+  },
+  {
+    slug: "tiny-factory",
+    title: "Tiny Factory",
+    services: ["roblox"],
+    cover: { kind: "tile" },
+    summary:
+      "A validation-first Roblox factory game about rolling for machines, building compact production lines, and discovering profitable combinations.",
+    problem:
+      "Factory games can lose their focus to oversized menus and unrelated progression systems. Tiny Factory is designed to make the production chain itself the main attraction.",
+    solution:
+      "The documented core loop is produce, process, sell, earn Coins, and use a free machine roll to decide how to rebuild and expand. The project is being developed in small validation-focused versions, so this case study describes its intended core loop rather than claiming every planned system is released.",
+    sourceUrl: "https://github.com/OrangeCheasy/RBLX-Tiny-Factory",
+    stack: ["Luau", "Roblox"],
+    featured: false,
+  },
+  {
+    slug: "lod-server-support",
+    title: "LOD Server Support",
+    services: [],
+    skills: ["Minecraft Modding", "Java"],
+    cover: { kind: "tile" },
+    summary:
+      "A multiplayer mod that lets Voxy clients view distant server terrain without exploring it first, with far-away players represented in LOD terrain.",
+    problem:
+      "Large multiplayer worlds are usually hidden beyond a player’s normal render distance, and joining late can mean exploring just to populate distant terrain.",
+    solution:
+      "The mod streams distant terrain to compatible clients and includes Far Players, which shows distant players with name tags, equipment, and mounts. The README documents Fabric, NeoForge, and Paper server support, plus an optional Xaero World Map bridge.",
+    sourceUrl: "https://github.com/OrangeCheasy/MC-Voxy-Server-Port",
+    stack: ["Java", "Fabric", "NeoForge", "Paper"],
     featured: false,
   },
   {
