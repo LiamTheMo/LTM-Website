@@ -11,6 +11,34 @@ function formatRepositoryDate(value: string) {
   }).format(new Date(value));
 }
 
+function RepositoryMark({ name }: { name: string }) {
+  const mark =
+    name === "LTM-Todo-App" ? "todo" : name === "LTM-Email-Service" ? "mail" : "web";
+
+  return (
+    <span
+      aria-hidden="true"
+      className="grid size-12 shrink-0 place-items-center rounded-xl border border-accent/20 bg-accent/10 text-accent"
+    >
+      {mark === "todo" ? (
+        <svg viewBox="0 0 24 24" fill="none" className="size-6" stroke="currentColor" strokeWidth="1.7">
+          <rect x="4" y="4" width="16" height="16" rx="4" />
+          <path d="m8 12 2.5 2.5L16 9" strokeLinecap="round" strokeLinejoin="round" />
+        </svg>
+      ) : mark === "mail" ? (
+        <svg viewBox="0 0 24 24" fill="none" className="size-6" stroke="currentColor" strokeWidth="1.7">
+          <rect x="3.5" y="5" width="17" height="14" rx="3" />
+          <path d="m5 7 7 5.5L19 7" strokeLinecap="round" strokeLinejoin="round" />
+        </svg>
+      ) : (
+        <svg viewBox="0 0 24 24" fill="none" className="size-6" stroke="currentColor" strokeWidth="1.7">
+          <path d="m8.5 7-5 5 5 5M15.5 7l5 5-5 5M14 5l-4 14" strokeLinecap="round" strokeLinejoin="round" />
+        </svg>
+      )}
+    </span>
+  );
+}
+
 export default async function GitHubActivitySection() {
   const activity = await getGitHubActivity();
 
@@ -93,16 +121,19 @@ export default async function GitHubActivitySection() {
                       rel="noreferrer"
                       className="group rounded-[var(--radius-card)] border border-border bg-surface px-5 py-4 transition-colors hover:border-accent focus-visible:border-accent"
                     >
-                      <div className="flex flex-wrap items-start justify-between gap-3">
-                        <div className="min-w-0">
-                          <h4 className="text-body font-medium text-text group-hover:text-accent">
-                            {repository.name}
-                          </h4>
+                      <div className="flex items-start gap-4">
+                        <RepositoryMark name={repository.name} />
+                        <div className="min-w-0 flex-1">
+                          <div className="flex flex-wrap items-center justify-between gap-3">
+                            <h4 className="text-body font-medium text-text group-hover:text-accent">
+                              {repository.name}
+                            </h4>
+                            {repository.language ? <Tag>{repository.language}</Tag> : null}
+                          </div>
                           <p className="mt-1 line-clamp-2 text-body-secondary text-text-muted">
                             {repository.description ?? "Public repository on GitHub."}
                           </p>
                         </div>
-                        {repository.language ? <Tag>{repository.language}</Tag> : null}
                       </div>
                       <div className="mt-4 flex flex-wrap gap-x-4 gap-y-1 text-caption text-text-muted">
                         <span>Updated {formatRepositoryDate(repository.pushedAt)}</span>

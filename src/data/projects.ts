@@ -21,22 +21,22 @@ export const projects: Project[] = [
     // than kept alongside — no other project keeps an unconverted original.
     cover: {
       kind: "image",
-      src: "/portfolio/this-website/cover.webp",
-      alt: "Composite showing the liamthemo.com homepage, featured work cards, and about section on the dark/orange redesign, next to the page title 'My Portfolio & Business Site'.",
+      src: "/portfolio/this-website/cover.svg",
+      alt: "Illustration of Liam’s current portfolio homepage with a Fullstack Developer heading and cards for LTM Todo, LTM Mail, and the website.",
     },
     summary:
-      "The website for my portfolio and business — a live example of the same kind of build offered to clients: a data-driven services and portfolio system on a fast, low-cost stack.",
+      "A fullstack developer portfolio built to present Liam’s projects, technical range, and experience in one fast, data-driven site.",
     problem:
-      "The business needed a site that gets a visitor to the right service quickly, ends every page with a path to the quote form, and doubles as a portfolio for both prospective clients and potential employers — without needing a new page written by hand every time a service or project is added.",
+      "Project details, technical work, and experience needed a clear home that is easy to browse and maintain as the portfolio grows.",
     solution:
-      "Built with Next.js (App Router) and TypeScript, deployed to Cloudflare Workers rather than a paid platform to keep hosting costs at effectively zero for a low-traffic marketing site. Services and portfolio case studies are generated from typed data files, so adding one is a data change, not a new page.",
+      "Built with Next.js (App Router) and TypeScript, with project content generated from typed data files and deployed to Cloudflare Workers. The site combines project case studies, experience, contact, and live public GitHub activity.",
     // overview/whatIBuilt/features/role/year: verbatim from
     // individual-project-page-mockup.png, which is owner-authored copy for
     // this specific project — not template filler (see the page's file
     // comment). Every other project below leaves these unset until the owner
     // writes real copy for it.
     overview:
-      "This site is my personal portfolio and business platform, built to showcase my work and the services I offer. It's fast, SEO-friendly, and designed to convert visitors into leads through a clear user journey and integrated quote form.",
+      "This is my fullstack developer portfolio: a fast, data-driven site for exploring my projects, experience, and technical work, with direct links to public repositories and a contact path.",
     whatIBuilt: [
       "Fully custom Next.js site with App Router",
       "TypeScript for type safety and scalability",
@@ -59,9 +59,9 @@ export const projects: Project[] = [
       },
       {
         icon: "target",
-        title: "Lead Focused",
+        title: "Clear Project Stories",
         description:
-          "Built-in quote form and clear CTAs guide visitors to take action.",
+          "Project pages and clear navigation help visitors explore the work and get in touch.",
       },
     ],
     role: "Design, Development, Deployment",
@@ -132,12 +132,41 @@ export const projects: Project[] = [
       },
     ],
     //
-    // featured: true — owner call, 2026-08-21, swapped in for Restaurant
-    // Sales Parser (see that entry below). Supersedes the note this used to
-    // carry, that the Phase 2 mockup's three picks (Fuse Factory, OrangeCheasy,
-    // Restaurant Sales Parser) left no room for a fourth without a real
-    // screenshot — same override pattern the rest of this file already uses
-    // for a direct, later owner instruction beating an earlier mockup pick.
+    // Featured homepage card alongside the two current LTM products.
+    featured: true,
+  },
+  {
+    slug: "ltm-todo-app",
+    title: "LTM Todo App",
+    services: [],
+    skills: ["Fullstack Development", "Product Design"],
+    cover: { kind: "tile" },
+    summary:
+      "An ad-free, installable personal productivity app with a first-party task and calendar model, designed for desktop, iPhone, and iPad.",
+    problem:
+      "A lightweight personal planner should make it quick to capture tasks and see the day’s schedule without depending on a third-party calendar or adding artificial limits.",
+    solution:
+      "The app combines fast task capture, chronological planning, due dates, and planned-work blocks. It stores data locally in the browser with IndexedDB; Web Push reminders use a per-browser queue. There are currently no accounts or cross-device task sync.",
+    sourceUrl: "https://github.com/OrangeCheasy/LTM-Todo-App",
+    stack: ["TypeScript", "Next.js", "React", "IndexedDB", "Cloudflare"],
+    icon: "✓",
+    featured: true,
+  },
+  {
+    slug: "ltm-email-service",
+    title: "LTM Email Service",
+    services: [],
+    skills: ["Fullstack Development", "Email Infrastructure"],
+    cover: { kind: "tile" },
+    summary:
+      "A responsive webmail client and Cloudflare-backed email service with passkeys, mailbox search, attachments, and optional Gmail connections.",
+    problem:
+      "A private email product needs a polished client and a backend that can handle message metadata, raw email, attachments, and secure sign-in.",
+    solution:
+      "The source-visible project pairs a React and TypeScript webmail client with a Cloudflare Workers API, D1 metadata, and R2 storage for raw messages and attachments. Production mailboxes, credentials, stored email, connected accounts, and infrastructure remain private.",
+    sourceUrl: "https://github.com/OrangeCheasy/LTM-Email-Service",
+    stack: ["React", "TypeScript", "Cloudflare Workers", "D1", "R2"],
+    icon: "✉",
     featured: true,
   },
   {
@@ -175,7 +204,38 @@ export const projects: Project[] = [
     // would promise gameplay and deliver the same marketing art. Add real
     // gameplay screenshots here when they're taken; the cover stays as it is.
     // featured: true — one of the mockup's three home-page picks (the evidence-based content rules Phase 2).
-    featured: true,
+    featured: false,
+  },
+  {
+    slug: "tiny-factory",
+    title: "Tiny Factory",
+    services: ["roblox"],
+    cover: { kind: "tile" },
+    summary:
+      "A validation-first Roblox factory game about rolling for machines, building compact production lines, and discovering profitable combinations.",
+    problem:
+      "Factory games can lose their focus to oversized menus and unrelated progression systems. Tiny Factory is designed to make the production chain itself the main attraction.",
+    solution:
+      "The documented core loop is produce, process, sell, earn Coins, and use a free machine roll to decide how to rebuild and expand. The project is being developed in small validation-focused versions, so this case study describes its intended core loop rather than claiming every planned system is released.",
+    sourceUrl: "https://github.com/OrangeCheasy/RBLX-Tiny-Factory",
+    stack: ["Luau", "Roblox"],
+    featured: false,
+  },
+  {
+    slug: "lod-server-support",
+    title: "LOD Server Support",
+    services: [],
+    skills: ["Minecraft Modding", "Java"],
+    cover: { kind: "tile" },
+    summary:
+      "A multiplayer mod that lets Voxy clients view distant server terrain without exploring it first, with far-away players represented in LOD terrain.",
+    problem:
+      "Large multiplayer worlds are usually hidden beyond a player’s normal render distance, and joining late can mean exploring just to populate distant terrain.",
+    solution:
+      "The mod streams distant terrain to compatible clients and includes Far Players, which shows distant players with name tags, equipment, and mounts. The README documents Fabric, NeoForge, and Paper server support, plus an optional Xaero World Map bridge.",
+    sourceUrl: "https://github.com/OrangeCheasy/MC-Voxy-Server-Port",
+    stack: ["Java", "Fabric", "NeoForge", "Paper"],
+    featured: false,
   },
   {
     slug: "orangecheasy-youtube",
@@ -234,7 +294,7 @@ export const projects: Project[] = [
       },
     ],
     // featured: true — one of the mockup's three home-page picks (the evidence-based content rules Phase 2).
-    featured: true,
+    featured: false,
   },
   {
     slug: "restaurant-sales-parser",
@@ -242,15 +302,15 @@ export const projects: Project[] = [
     // client: omitted. No restaurant name has been cleared for public use.
     services: ["automation", "excel-data"],
     summary:
-      "Turns a restaurant's raw weekly sales export into a finished report automatically, with nobody retyping a number.",
+      "A Python PDF parser that turns restaurant server-performance reports into structured summaries automatically.",
     problem:
-      "Every week, someone had to take the restaurant's raw sales data and manually turn it into a usable report — a repetitive, error-prone task that ate into time better spent running the restaurant.",
+      "Server-performance reporting arrives as long PDF documents, making it difficult to review and compare the information efficiently.",
     // TODO(owner): sharpen this once confirmed — what system the raw export
     // actually comes from (POS export? spreadsheet download?), and what the
     // manual process looked like before: which numbers got retyped where, into
     // what, and by whom.
     solution:
-      "A script reads the raw export and produces the finished report automatically — no manual retyping, no copy-paste between spreadsheets, no formulas to remember to update by hand.",
+      "A Python parser extracts server-performance information from the PDF report and organizes it into a readable summary. No unsupported time-saved or accuracy figures are claimed.",
     // TODO(owner): name the actual report(s) it produces once confirmed.
     //
     // TODO(owner): REAL BEFORE/AFTER METRICS — the retired pre-revamp specification
@@ -281,7 +341,7 @@ export const projects: Project[] = [
     cover: {
       kind: "image",
       src: "/portfolio/restaurant-sales-parser/dark.webp",
-      alt: "Diagram showing the parser turning 35 pages of unstructured raw server sales data into a clean weekly summary table with totals per server, broken out by special, food, and drink sales.",
+      alt: "Diagram showing a PDF server-performance report being parsed into a structured summary.",
     },
     // images: intentionally omitted. The cover above is the only asset, and
     // the case study renders the cover as its lead image — repeating it in
@@ -330,11 +390,11 @@ export const projects: Project[] = [
     // priority — the tile is not blocking anything.
     cover: { kind: "tile" },
     summary:
-      "A Roblox dungeon crawler built around modular, reusable systems — enemy AI with telegraphed attacks, zone-based spawning, phased bosses, and weighted loot.",
+      "A Roblox dungeon crawler built around reusable systems, readable enemy attacks, zone-based spawning, phased bosses, and per-item chance loot.",
     problem:
       "Wanted a dungeon crawler where the systems underneath — enemy AI, spawning, bosses, loot — are built to be reused and extended rather than one-off scripts per encounter, and where combat is readable: a player should be able to see an attack coming and react to it, not just get hit.",
     solution:
-      "The codebase is modular so enemy behaviors, spawning, and loot logic can be reused across different enemies and areas rather than rewritten each time. Enemy AI telegraphs its attacks so players can read and react before they land. Enemies spawn based on the zone the player is in rather than flat random spawning, bosses are built as distinct phases rather than one flat health bar, and loot uses a weighted table instead of flat drop odds.",
+      "The codebase is modular so enemy behaviors, spawning, and loot logic can be reused across different enemies and areas rather than rewritten each time. Enemy AI telegraphs its attacks so players can read and react before they land. Enemies spawn based on the zone the player is in rather than flat random spawning, bosses are built as distinct phases rather than one flat health bar, and loot tables roll each item against its own configured chance.",
     // result / metrics: intentionally omitted (the evidence-based content rules) — personal project, no
     // client outcome. Technically playable, but light on content and
     // currently on hold — a game at this scope is hard to build solo. Do not
