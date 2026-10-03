@@ -125,14 +125,15 @@ export default async function GitHubActivitySection() {
                         <RepositoryMark name={repository.name} />
                         <div className="min-w-0 flex-1">
                           <div className="flex flex-wrap items-center justify-between gap-3">
-                          <h4 className="text-body font-medium text-text group-hover:text-accent">
-                            {repository.name}
-                          </h4>
+                            <h4 className="text-body font-medium text-text group-hover:text-accent">
+                              {repository.name}
+                            </h4>
+                            {repository.language ? <Tag>{repository.language}</Tag> : null}
+                          </div>
                           <p className="mt-1 line-clamp-2 text-body-secondary text-text-muted">
                             {repository.description ?? "Public repository on GitHub."}
                           </p>
                         </div>
-                        {repository.language ? <Tag>{repository.language}</Tag> : null}
                       </div>
                       <div className="mt-4 flex flex-wrap gap-x-4 gap-y-1 text-caption text-text-muted">
                         <span>Updated {formatRepositoryDate(repository.pushedAt)}</span>
