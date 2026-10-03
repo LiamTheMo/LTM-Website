@@ -1,0 +1,39 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="750" viewBox="0 0 1200 750" role="img" aria-labelledby="title desc">
+  <title id="title">Fullstack developer portfolio illustration</title>
+  <desc id="desc">A dark portfolio page illustration with the heading Fullstack Developer and project cards.</desc>
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#171411"/><stop offset="1" stop-color="#27211b"/></linearGradient>
+    <linearGradient id="glow" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#ff9b4a"/><stop offset="1" stop-color="#f15d29"/></linearGradient>
+  </defs>
+  <rect width="1200" height="750" fill="#11100f"/>
+  <rect x="70" y="52" width="1060" height="646" rx="28" fill="url(#bg)" stroke="#494035" stroke-width="2"/>
+  <circle cx="108" cy="92" r="7" fill="#f47736"/><circle cx="132" cy="92" r="7" fill="#72533e"/><circle cx="156" cy="92" r="7" fill="#72533e"/>
+  <rect x="100" y="125" width="1000" height="1" fill="#40372e"/>
+  <text x="115" y="169" fill="#d0c5b8" font-family="Arial, sans-serif" font-size="20" letter-spacing="2">LIAM THE MO  /  PORTFOLIO</text>
+  <text x="115" y="280" fill="#fff8f0" font-family="Arial, sans-serif" font-size="78" font-weight="700">Fullstack</text>
+  <text x="115" y="365" fill="#fff8f0" font-family="Arial, sans-serif" font-size="78" font-weight="700">Developer<tspan fill="#fa7839">.</tspan></text>
+  <text x="118" y="414" fill="#b9aea2" font-family="Arial, sans-serif" font-size="24">Building useful products for web and beyond.</text>
+  <rect x="115" y="452" width="170" height="52" rx="26" fill="url(#glow)"/>
+  <text x="145" y="486" fill="#1a120d" font-family="Arial, sans-serif" font-size="18" font-weight="700">Explore projects</text>
+  <g transform="translate(115 545)">
+    <rect width="280" height="102" rx="14" fill="#30271f" stroke="#594533"/>
+    <rect x="18" y="18" width="44" height="44" rx="11" fill="#f17838"/>
+    <path d="M29 40l8 8 15-18" fill="none" stroke="#fff4e8" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+    <text x="78" y="43" fill="#fff4e8" font-family="Arial, sans-serif" font-size="20" font-weight="700">LTM Todo</text>
+    <text x="78" y="70" fill="#b9aea2" font-family="Arial, sans-serif" font-size="16">Plan the day, your way</text>
+  </g>
+  <g transform="translate(415 545)">
+    <rect width="280" height="102" rx="14" fill="#30271f" stroke="#594533"/>
+    <rect x="18" y="18" width="44" height="44" rx="11" fill="#aa7046"/>
+    <path d="M27 31h26v19H27zM28 32l12 9 12-9" fill="none" stroke="#fff4e8" stroke-width="2.5" stroke-linejoin="round"/>
+    <text x="78" y="43" fill="#fff4e8" font-family="Arial, sans-serif" font-size="20" font-weight="700">LTM Mail</text>
+    <text x="78" y="70" fill="#b9aea2" font-family="Arial, sans-serif" font-size="16">A private webmail system</text>
+  </g>
+  <g transform="translate(715 545)">
+    <rect width="350" height="102" rx="14" fill="#30271f" stroke="#594533"/>
+    <rect x="18" y="18" width="44" height="44" rx="11" fill="#9a5331"/>
+    <path d="M31 30l-9 10 9 10M49 30l9 10-9 10M44 25l-8 30" fill="none" stroke="#fff4e8" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+    <text x="78" y="43" fill="#fff4e8" font-family="Arial, sans-serif" font-size="20" font-weight="700">LTM Website</text>
+    <text x="78" y="70" fill="#b9aea2" font-family="Arial, sans-serif" font-size="16">Projects, experience &amp; contact</text>
+  </g>
+</svg>
