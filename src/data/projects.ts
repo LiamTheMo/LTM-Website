@@ -21,8 +21,8 @@ export const projects: Project[] = [
     // than kept alongside — no other project keeps an unconverted original.
     cover: {
       kind: "image",
-      src: "/portfolio/this-website/cover.webp",
-      alt: "Composite showing the liamthemo.com homepage, featured work cards, and about section on the dark/orange redesign, next to the page title 'My Portfolio & Business Site'.",
+      src: "/portfolio/this-website/cover.svg",
+      alt: "Illustration of Liam’s current portfolio homepage with a Fullstack Developer heading and cards for LTM Todo, LTM Mail, and the website.",
     },
     summary:
       "A fullstack developer portfolio built to present Liam’s projects, technical range, and experience in one fast, data-driven site.",
@@ -59,7 +59,7 @@ export const projects: Project[] = [
       },
       {
         icon: "target",
-        title: "Lead Focused",
+        title: "Clear Project Stories",
         description:
           "Project pages and clear navigation help visitors explore the work and get in touch.",
       },
@@ -132,12 +132,7 @@ export const projects: Project[] = [
       },
     ],
     //
-    // featured: true — owner call, 2026-08-21, swapped in for Restaurant
-    // Sales Parser (see that entry below). Supersedes the note this used to
-    // carry, that the Phase 2 mockup's three picks (Fuse Factory, OrangeCheasy,
-    // Restaurant Sales Parser) left no room for a fourth without a real
-    // screenshot — same override pattern the rest of this file already uses
-    // for a direct, later owner instruction beating an earlier mockup pick.
+    // Featured homepage card alongside the two current LTM products.
     featured: true,
   },
   {
