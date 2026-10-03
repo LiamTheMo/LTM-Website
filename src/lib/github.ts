@@ -196,7 +196,10 @@ export async function getGitHubActivity(): Promise<GitHubActivityData> {
       id: repository.id,
       name: repository.name,
       url: repository.html_url,
-      description: repository.description,
+      description:
+        repository.name === "LTM-Website"
+          ? "Fullstack developer portfolio for Liam Mo — selected projects, experience, and technical work."
+          : repository.description,
       language: repository.language,
       stars: repository.stargazers_count,
       pushedAt: repository.pushed_at,
