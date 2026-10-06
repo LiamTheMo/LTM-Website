@@ -1,17 +1,15 @@
 import { SERVICE_META, type ServiceSlug } from "@/lib/types";
 
 /**
- * Shared with both QuoteForm.tsx (client-side UX validation) and
- * /api/quote/route.ts (server-side, the copy that actually matters). One
- * definition of what a valid submission looks like, imported on both sides,
- * so the two validators cannot drift apart.
+ * Used by QuoteForm.tsx for client-side validation before opening an email
+ * draft. The site does not receive or store quote form submissions.
  *
  * "What's this about?" is a two-tier question, at the owner's request:
  *   1. serviceCategory — "Services" or "Other". Nothing else on the form is
  *      shown until this is answered.
  *   2. Only if "Services": serviceType — which of the five lines (or "not
  *      sure yet"). Only if "Other": otherTitle, a free-text title, since
- *      "Other" alone gives nothing to read in a Discord notification.
+ *      "Other" alone does not describe what the visitor is asking about.
  * Budget only makes sense against a real service line, so it is gated on
  * serviceCategory === "services" too — see QuoteForm.tsx's render logic.
  */
@@ -222,7 +220,7 @@ export function validateQuotePayload(
   };
 }
 
-/** Human-readable "what this is about", for Discord and nowhere else. */
+/** Human-readable description of the selected service for the email draft. */
 export function describeService(payload: QuoteFormPayload): string {
   if (payload.serviceCategory === "other") {
     return payload.otherTitle ? `Other — ${payload.otherTitle}` : "Other";

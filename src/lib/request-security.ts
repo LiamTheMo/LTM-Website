@@ -1,5 +1,3 @@
-const JSON_CONTENT_TYPE = "application/json";
-
 /**
  * Reject browser requests initiated from a different origin. This is not a
  * replacement for edge rate limiting, but it prevents ordinary cross-site
@@ -21,19 +19,4 @@ export function isSameOriginRequest(request: Request): boolean {
   } catch {
     return false;
   }
-}
-
-export function hasJsonContentType(request: Request): boolean {
-  const contentType = request.headers.get("content-type");
-  if (!contentType) return false;
-
-  return contentType.split(";", 1)[0]?.trim().toLowerCase() === JSON_CONTENT_TYPE;
-}
-
-export function contentLengthExceeds(request: Request, maxBytes: number): boolean {
-  const value = request.headers.get("content-length");
-  if (!value) return false;
-
-  const length = Number(value);
-  return !Number.isSafeInteger(length) || length < 0 || length > maxBytes;
 }

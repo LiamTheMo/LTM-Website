@@ -110,7 +110,12 @@ The Phase 8 footer supports an anonymous unique-browser approximation using a Cl
 
 The counter stores only one aggregate integer. A first-party HttpOnly cookie prevents the same browser from incrementing the total again for approximately one year; no IP address, email, device fingerprint, or visitor identifier is stored in D1. The increment is a single atomic SQLite upsert, and the API disables caching so the stat remains current even when the homepage itself is cached.
 
-The production `VISITOR_DB` binding must be configured in Cloudflare's deployment settings when the counter is enabled. Without that binding, the footer degrades to `Visitor count unavailable`.
+Cloudflare Workers Builds configures the production binding from build-only values. In the Worker settings under **Build > Build variables and secrets**, add:
+
+- `VISITOR_DB_ID` as a secret containing the D1 database UUID.
+- `VISITOR_DB_NAME` as a build variable containing the exact D1 database name.
+
+`npm run build:worker` writes these values into an ignored, temporary Wrangler config and adds the `VISITOR_DB` D1 binding. Wrangler uses that generated config during Cloudflare's separate deploy step. The ID is not committed to this public repository or exposed as a runtime variable. Cloudflare Workers Builds fails before deployment if either value is missing. Local and GitHub CI builds without these values continue to validate the application without a production database binding.
 
 ## Project structure
 
@@ -141,7 +146,7 @@ Production deployment is managed by Cloudflare's automatic Git integration from 
 
 ### Deployment workflow
 
-Cloudflare's automatic Git integration is the only production deployment path. Keep GitHub Actions deployment workflows removed. GitHub Actions must never deploy or publish production.
+Cloudflare's automatic Git integration is the only production deployment path. GitHub Actions must never deploy or publish production. The repository currently has only CI validation and CodeQL workflows; neither deploys.
 
 For Cloudflare Workers Builds, set the build command to `npm run build:worker` and the deploy command to `npx opennextjs-cloudflare deploy`. A plain `npm run build` only creates the Next.js output; deployment requires the OpenNext Worker output first.
 
@@ -166,7 +171,7 @@ This repository is intentionally public, so source code must never be treated as
 - CodeQL scans only permanent version branches; it never runs on `main`.
 - Dependabot checks npm and GitHub Actions dependencies weekly.
 - CI blocks pull requests with high/critical production dependency audit findings.
-- Public POST endpoints validate origin/request shape, and the quote webhook code avoids logging secret-bearing network errors.
+- The contact form validates in the browser and opens an email draft; the site does not send or store those submissions.
 - Baseline browser security headers are applied globally through Next.js.
 - See [`SECURITY.md`](./SECURITY.md) for private vulnerability-reporting guidance.
 
