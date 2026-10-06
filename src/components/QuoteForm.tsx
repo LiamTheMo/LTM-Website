@@ -3,10 +3,14 @@
 import { useId, useRef, useState } from "react";
 import {
   BUDGET_OPTIONS,
+  budgetLabel,
   CONTACT_METHOD_OPTIONS,
+  contactMethodLabel,
+  describeService,
   SERVICE_CATEGORY_OPTIONS,
   SERVICE_TYPE_OPTIONS,
   TIMELINE_OPTIONS,
+  timelineLabel,
   validateQuotePayload,
   type QuoteFormPayload,
   type QuoteValidationError,
@@ -17,9 +21,8 @@ import {
 /*
   The site's main contact/conversion form.
 
-  CLIENT COMPONENT: a form is exactly the
-  interactivity that justifies it: field state, a fetch to /api/quote, and
-  success/error UI that native HTML alone cannot provide.
+  CLIENT COMPONENT: field state and validation prepare a message in the
+  visitor's email app. The site does not send or store form submissions.
 
   PROGRESSIVE DISCLOSURE, at the owner's request. Nothing past "What's this
   about?" renders until that question is answered — not a visual nicety, an
@@ -40,8 +43,6 @@ import {
   browser's own popup UI never fires. Each invalid field carries `aria-invalid`
   and `aria-describedby` pointing at its own error text, so the error reaches a
   screen reader the same way it reaches a sighted visitor.
-
-  "Send request" / "Request sent" — same verb throughout, per §8.
 */
 
 type FieldErrors = Partial<Record<keyof QuoteFormPayload, string>>;
@@ -139,13 +140,10 @@ export default function QuoteForm({ initialService = "" }: QuoteFormProps) {
   );
   const [contactMethod, setContactMethod] = useState("email");
   const [fieldErrors, setFieldErrors] = useState<FieldErrors>({});
-  const [serverError, setServerError] = useState<string | null>(null);
-  const [status, setStatus] = useState<"idle" | "submitting" | "success">(
-    "idle",
-  );
+  const [status, setStatus] = useState<"idle" | "prepared">("idle");
   const summaryRef = useRef<HTMLDivElement>(null);
 
-  if (status === "success") {
+  if (status === "prepared") {
     // No border/background of its own: this renders inside the contact
     // page's card (contact/page.tsx), so a second nested card here would
     // frame the frame. Just the centred content.
@@ -156,10 +154,16 @@ export default function QuoteForm({ initialService = "" }: QuoteFormProps) {
             the note there): a ring around it read as busy for no gain. */}
         <div className="flex items-center justify-center gap-2.5">
           <CheckIcon />
-          <h2 className="text-h3 text-text">Request sent</h2>
+          <h2 className="text-h3 text-text">Email draft prepared</h2>
         </div>
         <p className="mx-auto mt-3 max-w-[48ch] text-body text-text-muted">
-          I&apos;ll reply within one business day with what it would take.
+          Your email app should open with your message. Review it and press send
+          to finish; this site does not send it automatically. If no app opens,
+          email{" "}
+          <a className="text-accent underline" href="mailto:contact@liamthemo.com">
+            contact@liamthemo.com
+          </a>
+          .
         </p>
       </div>
     );
@@ -169,9 +173,8 @@ export default function QuoteForm({ initialService = "" }: QuoteFormProps) {
     return fieldErrors[field] ? `${id}-error` : undefined;
   }
 
-  async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
+  function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
-    setServerError(null);
 
     const form = new FormData(event.currentTarget);
     const payload: Partial<Record<keyof QuoteFormPayload, unknown>> = {
@@ -195,42 +198,24 @@ export default function QuoteForm({ initialService = "" }: QuoteFormProps) {
     }
 
     setFieldErrors({});
-    setStatus("submitting");
-
-    try {
-      const res = await fetch("/api/quote", {
-        method: "POST",
-        headers: { "content-type": "application/json" },
-        body: JSON.stringify(result.value),
-      });
-
-      if (res.ok) {
-        setStatus("success");
-        return;
-      }
-
-      const data = (await res.json().catch(() => null)) as {
-        error?: string;
-        errors?: QuoteValidationError[];
-      } | null;
-
-      if (data?.errors?.length) {
-        applyErrors(data.errors);
-      } else {
-        setStatus("idle");
-        setServerError(
-          data?.error ??
-            "Something went wrong sending your message. Try again, or email contact@liamthemo.com directly.",
-        );
-        focusSummary();
-      }
-    } catch {
-      setStatus("idle");
-      setServerError(
-        "Couldn't reach the server — check your connection and try again, or email contact@liamthemo.com directly.",
-      );
-      focusSummary();
-    }
+    const value = result.value;
+    const details = [
+      `Name: ${value.name}`,
+      `Email: ${value.email}`,
+      `Topic: ${describeService(value)}`,
+      ...(value.serviceCategory === "services"
+        ? [`Budget: ${budgetLabel(value.budget)}`, `Timeline: ${timelineLabel(value.timeline)}`]
+        : []),
+      `Preferred contact: ${contactMethodLabel(value.contactMethod)}`,
+      ...(value.phone ? [`Phone: ${value.phone}`] : []),
+      "",
+      value.description,
+    ];
+    setFieldErrors({});
+    setStatus("prepared");
+    window.location.assign(`mailto:contact@liamthemo.com?subject=${encodeURIComponent(
+      `Website inquiry from ${value.name}`,
+    )}&body=${encodeURIComponent(details.join("\n"))}`);
   }
 
   function applyErrors(errors: QuoteValidationError[]) {
@@ -247,22 +232,12 @@ export default function QuoteForm({ initialService = "" }: QuoteFormProps) {
     });
   }
 
-  const submitting = status === "submitting";
   const showPhone = contactMethod === "phone" || contactMethod === "text";
   const errorCount = Object.keys(fieldErrors).length;
 
   return (
     <form onSubmit={handleSubmit} noValidate>
-      {serverError ? (
-        <div
-          ref={summaryRef}
-          role="alert"
-          className="mb-6 flex items-start gap-2.5 rounded-lg border border-danger bg-danger-dim px-4 py-3 text-small text-text"
-        >
-          <WarningIcon />
-          <span>{serverError}</span>
-        </div>
-      ) : errorCount > 0 ? (
+      {errorCount > 0 ? (
         <div
           ref={summaryRef}
           role="alert"
@@ -271,8 +246,8 @@ export default function QuoteForm({ initialService = "" }: QuoteFormProps) {
           <WarningIcon />
           <span>
             {errorCount === 1
-              ? "One field needs a fix before this can send."
-              : `${errorCount} fields need a fix before this can send.`}
+              ? "One field needs a fix before an email draft can be prepared."
+              : `${errorCount} fields need a fix before an email draft can be prepared.`}
           </span>
         </div>
       ) : null}
@@ -533,10 +508,9 @@ export default function QuoteForm({ initialService = "" }: QuoteFormProps) {
 
             <button
               type="submit"
-              disabled={submitting}
-              className="mt-3 inline-flex items-center justify-center rounded-lg border border-accent bg-accent px-6 py-2.5 font-semibold text-bg transition-colors hover:bg-accent-hover disabled:cursor-not-allowed disabled:opacity-70"
+              className="mt-3 inline-flex items-center justify-center rounded-lg border border-accent bg-accent px-6 py-2.5 font-semibold text-bg transition-colors hover:bg-accent-hover"
             >
-              {submitting ? "Sending…" : "Send request"}
+              Prepare email draft
             </button>
           </>
         ) : null}

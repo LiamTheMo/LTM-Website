@@ -6,12 +6,9 @@
  */
 declare global {
   interface CloudflareEnv {
-    /** Discord webhook URL the quote handler posts new leads to. */
-    DISCORD_WEBHOOK_URL: string;
     /**
-     * Optional D1 database used by the anonymous visitor counter. The site
-     * intentionally degrades to an unavailable counter when the binding has
-     * not been provisioned rather than blocking page rendering/deployment.
+     * D1 database used by the anonymous visitor counter. Cloudflare build
+     * settings provide the binding; its ID is not committed to the repository.
      */
     VISITOR_DB?: D1Database;
   }
