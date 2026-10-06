@@ -14,15 +14,11 @@ export const projects: Project[] = [
     title: "This Website",
     // client: omitted — this is the owner's own business site.
     services: ["websites"],
-    // Owner-supplied 2026-08-21, resolving the TODO that used to sit here.
-    // Delivered as cover.png (1.6 MB); converted to WebP (the evidence-based content rules/the evidence-based content rules — every
-    // other cover on the site is already .webp) at quality 85, which held up
-    // visually on inspection and cut it to ~130 KB. Source PNG deleted rather
-    // than kept alongside — no other project keeps an unconverted original.
+    // Restored the original owner-uploaded portfolio cover image.
     cover: {
       kind: "image",
-      src: "/portfolio/this-website/cover.svg",
-      alt: "Illustration of Liam’s current portfolio homepage with a Fullstack Developer heading and cards for LTM Todo, LTM Mail, and the website.",
+      src: "/portfolio/this-website/cover.webp",
+      alt: "The orange-and-black portfolio cover artwork with a website mockup and featured work.",
     },
     summary:
       "A fullstack developer portfolio built to present Liam’s projects, technical range, and experience in one fast, data-driven site.",
@@ -140,7 +136,11 @@ export const projects: Project[] = [
     title: "LTM Todo App",
     services: [],
     skills: ["Fullstack Development", "Product Design"],
-    cover: { kind: "tile" },
+    cover: {
+      kind: "image",
+      src: "/portfolio/ltm-todo-app/dashboard.webp",
+      alt: "Screenshot of the LTM Todo dashboard with day-by-day planning and calendar navigation.",
+    },
     summary:
       "An ad-free, installable personal productivity app with a first-party task and calendar model, designed for desktop, iPhone, and iPad.",
     problem:
@@ -157,7 +157,11 @@ export const projects: Project[] = [
     title: "LTM Email Service",
     services: [],
     skills: ["Fullstack Development", "Email Infrastructure"],
-    cover: { kind: "tile" },
+    cover: {
+      kind: "image",
+      src: "/portfolio/ltm-email-service/mail-client.webp",
+      alt: "Screenshot of LTM Mail’s inbox with mailbox folders, account switcher, and message view.",
+    },
     summary:
       "A responsive webmail client and Cloudflare-backed email service with passkeys, mailbox search, attachments, and optional Gmail connections.",
     problem:
