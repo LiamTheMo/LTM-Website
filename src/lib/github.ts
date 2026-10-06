@@ -8,6 +8,7 @@ const FEATURED_REPOSITORY_NAMES = [
   "LTM-Email-Service",
   "LTM-Website",
 ] as const;
+const FEATURED_REPOSITORY_NAME_SET = new Set<string>(FEATURED_REPOSITORY_NAMES);
 
 const githubHeaders = {
   Accept: "application/vnd.github+json",
@@ -179,18 +180,16 @@ async function fetchContributionCalendar() {
 }
 
 export async function getGitHubActivity(): Promise<GitHubActivityData> {
-  const [profile, repositoryResults, calendar] = await Promise.all([
+  const [profile, repositories, calendar] = await Promise.all([
     fetchGitHub<GitHubProfileResponse>(`/users/${GITHUB_USERNAME}`),
-    Promise.all(
-      FEATURED_REPOSITORY_NAMES.map((repositoryName) =>
-        fetchGitHub<GitHubRepositoryResponse>(`/repos/${GITHUB_USERNAME}/${repositoryName}`),
-      ),
+    fetchGitHub<GitHubRepositoryResponse[]>(
+      `/users/${GITHUB_USERNAME}/repos?type=owner&sort=updated&per_page=100`,
     ),
     fetchContributionCalendar(),
   ]);
 
-  const featuredRepositories = repositoryResults
-    .filter((repository): repository is GitHubRepositoryResponse => Boolean(repository))
+  const featuredRepositories = (repositories ?? [])
+    .filter((repository) => FEATURED_REPOSITORY_NAME_SET.has(repository.name))
     .filter((repository) => !repository.archived)
     .map((repository) => ({
       id: repository.id,
