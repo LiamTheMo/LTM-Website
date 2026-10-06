@@ -63,20 +63,20 @@ function buildWeeks(days: readonly GitHubContributionDay[]): CalendarWeek[] {
 
 function buildMonthLabels(weeks: readonly CalendarWeek[]) {
   const labels: { label: string; weekIndex: number }[] = [];
-  let lastMonth = -1;
+  let lastMonth = "";
 
   weeks.forEach((week, weekIndex) => {
-    const firstWeekOfMonthDay = week.days.find((day) => {
+    const firstVisibleDay = week.days.find((day) => day !== null);
+    if (!firstVisibleDay) return;
+
+    const firstOfMonth = week.days.find((day) => {
       if (!day) return false;
-      const date = parseDate(day.date);
-      return date.getUTCDate() <= 7;
+      return parseDate(day.date).getUTCDate() === 1;
     });
+    const date = firstOfMonth ? parseDate(firstOfMonth.date) : parseDate(firstVisibleDay.date);
+    const monthKey = `${date.getUTCFullYear()}-${date.getUTCMonth()}`;
 
-    if (!firstWeekOfMonthDay) return;
-
-    const date = parseDate(firstWeekOfMonthDay.date);
-    const month = date.getUTCMonth();
-    if (month === lastMonth) return;
+    if (monthKey === lastMonth) return;
 
     labels.push({
       label: new Intl.DateTimeFormat("en-US", {
@@ -85,7 +85,7 @@ function buildMonthLabels(weeks: readonly CalendarWeek[]) {
       }).format(date),
       weekIndex,
     });
-    lastMonth = month;
+    lastMonth = monthKey;
   });
 
   return labels;
@@ -117,23 +117,20 @@ export default function GitHubContributionGraph({
 
       <div className="no-scrollbar overflow-x-auto pb-1">
         <div className="w-max min-w-full">
-          <div className="ml-8 h-[18px]" style={{ width: calendarWidth }} aria-hidden="true">
-            <div
-              className="grid h-full text-[12px] leading-[18px] text-text-muted"
-              style={{
-                gridTemplateColumns: `repeat(${weeks.length}, ${CELL_SIZE}px)`,
-                columnGap: `${CELL_GAP}px`,
-              }}
-            >
-              {monthLabels.map((month) => (
-                <span
-                  key={`${month.label}-${month.weekIndex}`}
-                  style={{ gridColumn: `${month.weekIndex + 1} / span 4` }}
-                >
-                  {month.label}
-                </span>
-              ))}
-            </div>
+          <div
+            className="relative ml-8 h-[18px] text-[12px] leading-[18px] text-text-muted"
+            style={{ width: calendarWidth }}
+            aria-hidden="true"
+          >
+            {monthLabels.map((month) => (
+              <span
+                key={`${month.label}-${month.weekIndex}`}
+                className="absolute top-0 whitespace-nowrap"
+                style={{ left: month.weekIndex * (CELL_SIZE + CELL_GAP) }}
+              >
+                {month.label}
+              </span>
+            ))}
           </div>
 
           <div className="mt-1 flex" role="img" aria-label={summary}>
