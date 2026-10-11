@@ -102,7 +102,7 @@ npm run build:worker
 
 `npm run build:worker` runs the OpenNext adapter and generates `.open-next/`, including `.open-next/worker.js` and `.open-next/assets`.
 
-Browser regression checks are run in a version-branch CI job using pinned Chromium. The job tests mobile, tablet, and desktop widths and uploads responsive screenshots and local load-timing baselines. To run it locally after a production build, install the pinned test-only Playwright dependency (`npm install --no-save --package-lock=false playwright@1.56.1`), install Chromium (`npx playwright install chromium`), then run `npm run smoke:browser`. The resulting `artifacts/browser-smoke/` directory is generated and must not be committed.
+Browser regression and automated WCAG 2.0–2.2 AA checks are run in a version-branch CI job using pinned Chromium and axe-core. The job tests mobile, tablet, and desktop widths and uploads responsive screenshots and local load-timing baselines. To run it locally after a production build, install the pinned test-only Playwright dependency (`npm install --no-save --package-lock=false playwright@1.56.1 @axe-core/playwright@4.13.0`), install Chromium (`npx playwright install chromium`), then run `npm run smoke:browser`. The resulting `artifacts/browser-smoke/` directory is generated and must not be committed.
 
 For a local Cloudflare/OpenNext preview:
 

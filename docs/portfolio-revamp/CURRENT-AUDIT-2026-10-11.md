@@ -9,13 +9,14 @@ This is the current implementation audit for the `v3.03` maintenance line. It su
 - Featured project selection fails gracefully instead of throwing when the featured count changes.
 - Responsive gallery supports larger touch targets, keyboard arrow navigation, reduced-motion scrolling, and correct scroll-container geometry; pagination no longer wraps across several rows on narrow phones.
 - Project cards and buttons have more visible focus/hover states that respect reduced motion; hero portrait sizing and warm ambient framing improved.
+- The GitHub contribution calendar scroll region is keyboard-focusable (identified by the WCAG automated scan on mobile/tablet).
 - Screenshot carousel has 44-pixel button controls and reduced-motion scrolling.
 - GitHub contribution parsing has unit coverage. Server-side GitHub requests now have bounded timeouts and safe unavailable states.
 - Anonymous visitor counter has an idempotent D1 schema migration, no per-request DDL, accurate approximate-browser wording, and a read-only `GET /api/visitors` verification endpoint.
 - Contact email drafting has retry/copy fallbacks if the visitor has no mail client.
 - Repository tests validate internal navigation routes, project slugs, asset existence, alt-text presence, and GitHub owner URLs.
 - An opt-in HTTPS external-link check is available via `npm run check:links:remote`.
-- A pinned Chromium smoke job builds the site and tests mobile/tablet/desktop routes, navigation, form validation, gallery controls, page JavaScript errors and viewport overflow. It uploads full-page screenshots plus local navigation/FCP timing baselines for inspection.
+- A pinned Chromium smoke job builds the site and tests mobile/tablet/desktop routes, navigation, form validation, gallery controls, page JavaScript errors, viewport overflow and axe-core WCAG 2.0–2.2 AA violations. It uploads full-page screenshots plus local navigation/FCP timing baselines for inspection.
 - Sitemap no longer invents `lastModified` dates for all URLs on every request.
 - GitHub Actions remains validation-only for version PRs; production deployment remains a Cloudflare integration from `main` only.
 
@@ -51,11 +52,11 @@ npx tsc --noEmit
 For a local Chromium review after `npm run build`:
 
 ```bash
-npm install --no-save --package-lock=false playwright@1.56.1
+npm install --no-save --package-lock=false playwright@1.56.1 @axe-core/playwright@4.13.0
 npx playwright install chromium
 npm run smoke:browser
 ```
 
-The smoke script starts the local production Next.js server, shuts it down afterwards, and writes screenshots/metrics to `artifacts/browser-smoke/`. GitHub CI archives them for 14 days. Do not commit test outputs or install Playwright into application runtime dependencies.
+The smoke script also checks automated WCAG 2.0–2.2 AA rules at three viewport sizes using axe-core. It starts the local production Next.js server, shuts it down afterwards, and writes screenshots, accessibility results and timing metrics to `artifacts/browser-smoke/`. GitHub CI archives them for 14 days. Do not commit test outputs or install Playwright into application runtime dependencies.
 
 Review and apply valid findings, merge into `v3.03`, then release that checkpoint to `main` only. No version or minor branch may deploy.

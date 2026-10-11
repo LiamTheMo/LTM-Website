@@ -115,7 +115,12 @@ export default function GitHubContributionGraph({
     <div className="rounded-[var(--radius-card)] border border-border bg-surface p-4 text-text">
       <p className="mb-3 text-[16px] font-normal leading-6">{summary}</p>
 
-      <div className="no-scrollbar overflow-x-auto pb-1">
+      <div
+        className="no-scrollbar overflow-x-auto pb-1"
+        tabIndex={0}
+        role="region"
+        aria-label="Contribution calendar: scroll horizontally to see more weeks"
+      >
         <div className="w-max min-w-full">
           <div
             className="relative ml-8 h-[18px] text-[12px] leading-[18px] text-text-muted"
