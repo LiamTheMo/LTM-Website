@@ -5,6 +5,7 @@ import test from "node:test";
 import { projects } from "../src/data/projects.ts";
 import { profileContent } from "../src/data/profile.ts";
 import { socialLinks } from "../src/data/social.ts";
+import { mainNavigation } from "../src/data/site.ts";
 
 const root = process.cwd();
 const asset = (value) => path.join(root, "public", value.replace(/^\//, ""));
@@ -57,4 +58,23 @@ test("GitHub links use current repository owner and valid HTTPS URLs", () => {
 test("primary social and project links are not duplicated", () => {
   assert.equal(new Set(socialLinks.map((link) => link.kind)).size, socialLinks.length);
   assert.ok(projects.every((project) => project.summary?.trim().length > 20));
+});
+
+test("internal navigation destinations exist and point to public routes", () => {
+  const staticRoutes = new Set(["/", "/about", "/contact", "/experience", "/projects", "/resume"]);
+  const targets = [
+    ...mainNavigation.flatMap(({ href, aliases = [] }) => [href, ...aliases]),
+    ...socialLinks.filter((link) => !link.external).map((link) => link.href),
+    profileContent.resumeHref,
+  ];
+  for (const target of targets) {
+    const url = new URL(target, "https://liamthemo.com");
+    assert.equal(url.origin, "https://liamthemo.com");
+    if (url.pathname === "/portfolio") continue; // documented legacy redirect
+    assert.ok(staticRoutes.has(url.pathname), `Unknown navigation route ${target}`);
+    assert.ok(
+      url.pathname === "/" || existsSync(path.join(root, "src/app", url.pathname, "page.tsx")),
+      `Missing route page ${target}`,
+    );
+  }
 });
