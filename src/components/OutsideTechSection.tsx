@@ -111,7 +111,7 @@ export default function OutsideTechSection() {
 
     track.scrollTo({
       left: Math.max(0, Math.min(centeredLeft, maxScrollLeft)),
-      behavior: window.matchMedia("(prefers-reduced-motion: reduce)").matches ? "instant" : "smooth",
+      behavior: window.matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth",
     });
   }
 
