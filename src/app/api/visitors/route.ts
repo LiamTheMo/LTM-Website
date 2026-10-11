@@ -9,6 +9,27 @@ interface VisitorCountRow {
   count: number;
 }
 
+// D1 migrations own the schema; this one-time-per-isolate fallback keeps
+// existing Workers compatible while production migrations are verified.
+// Failed initialization is retried, instead of permanently caching an error.
+let schemaInitialization: Promise<void> | undefined;
+
+function ensureVisitorSchema(db: D1Database): Promise<void> {
+  if (!schemaInitialization) {
+    schemaInitialization = db
+      .prepare(
+        "CREATE TABLE IF NOT EXISTS visitor_counter (id INTEGER PRIMARY KEY CHECK (id = 1), count INTEGER NOT NULL DEFAULT 0)",
+      )
+      .run()
+      .then(() => undefined)
+      .catch((error: unknown) => {
+        schemaInitialization = undefined;
+        throw error;
+      });
+  }
+  return schemaInitialization;
+}
+
 function unavailableResponse() {
   return NextResponse.json(
     { count: null },
@@ -41,11 +62,7 @@ export async function POST(request: NextRequest) {
       return unavailableResponse();
     }
 
-    await db
-      .prepare(
-        "CREATE TABLE IF NOT EXISTS visitor_counter (id INTEGER PRIMARY KEY CHECK (id = 1), count INTEGER NOT NULL DEFAULT 0)",
-      )
-      .run();
+    await ensureVisitorSchema(db);
 
     const alreadyCounted = request.cookies.has(VISITOR_COOKIE);
 
@@ -59,8 +76,12 @@ export async function POST(request: NextRequest) {
           )
           .first<VisitorCountRow>();
 
+    if (!row || !Number.isFinite(row.count)) {
+      return unavailableResponse();
+    }
+
     const response = NextResponse.json(
-      { count: row?.count ?? 0 },
+      { count: row.count },
       {
         headers: {
           "Cache-Control": "no-store",

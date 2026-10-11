@@ -4,15 +4,15 @@ Personal portfolio website for **Liam Mo**, built around software development, p
 
 **Live site:** https://liamthemo.com
 
-The former service-first site has been rebuilt as a personal developer portfolio. The primary positioning is **Fullstack Developer**, supported by work across web applications, games, automation, tooling, and UI implementation. The v3.00 line is the finalized portfolio baseline, with only owner-supplied photos and the final resume still being added as content polish.
+The former service-first site has been rebuilt as a personal developer portfolio. The primary positioning is **Fullstack Developer**, supported by work across web applications, games, automation, tooling, and UI implementation. The v3.00 line is the portfolio baseline. Subsequent v3.03 maintenance includes data reliability, updated projects, gallery polish, and improved visitor metrics; the public resume asset is still pending.
 
 ## Current development line
 
 | Item | Value |
 | --- | --- |
 | Pre-revamp snapshot | `v2.00` |
-| Current major branch | `v3.00` |
-| Current phase | Final content polish — profile photos, Outside the Tech gallery, and final resume |
+| Current major branch | `v3.03` |
+| Current phase | Portfolio reliability, content accuracy, accessibility, and UX audit |
 | Production domain | `liamthemo.com` |
 
 `v2.00` is the preserved snapshot of the website before the portfolio revamp and should not be rewritten.
@@ -53,12 +53,14 @@ This repository uses version branches as stable major branches.
 Example:
 
 ```text
-v3.00
-  └─ docs/v3.00-readme-refresh
-       └─ merge back into v3.00
+v3.03
+  └─ fix/v3.03-portfolio-audit-improvements
+       └─ merge back into v3.03
 
-v3.00 finalized
-  └─ future major editor/CMS work begins on v4.00
+v3.03 validated
+  └─ merge v3.03 into main for Cloudflare production deployment
+
+Future editor/CMS development begins on a new minor branch from v4.00
 ```
 
 ## Stack
@@ -89,6 +91,7 @@ Useful validation commands:
 
 ```bash
 npm run lint
+npm run test:unit
 npm run build
 npx tsc --noEmit
 npm run build:worker
@@ -108,7 +111,7 @@ npm run preview
 
 The Phase 8 footer supports an anonymous unique-browser approximation using a Cloudflare D1 binding named `VISITOR_DB`.
 
-The counter stores only one aggregate integer. A first-party HttpOnly cookie prevents the same browser from incrementing the total again for approximately one year; no IP address, email, device fingerprint, or visitor identifier is stored in D1. The increment is a single atomic SQLite upsert, and the API disables caching so the stat remains current even when the homepage itself is cached.
+The counter stores only one aggregate integer. A first-party HttpOnly cookie prevents the same browser from incrementing the total again for approximately one year; no IP address, email, device fingerprint, or visitor identifier is stored in D1. The increment is a single atomic SQLite upsert, and the API disables caching so the stat remains current even when the homepage itself is cached. The displayed number is an estimate of distinct browsers retaining the first-party cookie, **not** unique people.
 
 Cloudflare Workers Builds configures the production binding from build-only values. In the Worker settings under **Build > Build variables and secrets**, add:
 
@@ -116,6 +119,14 @@ Cloudflare Workers Builds configures the production binding from build-only valu
 - `VISITOR_DB_NAME` as a build variable containing the exact D1 database name.
 
 `npm run build:worker` writes these values into an ignored, temporary Wrangler config and adds the `VISITOR_DB` D1 binding. Wrangler uses that generated config during Cloudflare's separate deploy step. The ID is not committed to this public repository or exposed as a runtime variable. Cloudflare Workers Builds fails before deployment if either value is missing. Local and GitHub CI builds without these values continue to validate the application without a production database binding.
+
+The version-controlled schema is `migrations/visitor-counter/0001_init.sql`. When provisioning a fresh production D1 database, apply it once with an authenticated Wrangler session before releasing the Worker:
+
+```bash
+npx wrangler d1 execute "$VISITOR_DB_NAME" --remote --file=migrations/visitor-counter/0001_init.sql
+```
+
+The SQL is idempotent and preserves existing counts. Until the migration is confirmed applied, the API includes a compatibility safeguard that creates the schema **at most once per Worker instance** rather than on every visit. Once the deployment database and migration are independently verified, that fallback can be removed. A GitHub CI build alone cannot verify a Cloudflare production D1 binding or live counter.
 
 ## Project structure
 
@@ -146,7 +157,7 @@ Production deployment is managed by Cloudflare's automatic Git integration from 
 
 ### Deployment workflow
 
-Cloudflare's automatic Git integration is the only production deployment path. GitHub Actions must never deploy or publish production. The repository currently has only CI validation and CodeQL workflows; neither deploys.
+Cloudflare's automatic Git integration is the only production deployment path. GitHub Actions must never deploy or publish production. The repository currently has only CI validation and CodeQL workflows; neither deploys. CI also runs dependency-free Node unit regression tests for external-data parsing.
 
 For Cloudflare Workers Builds, set the build command to `npm run build:worker` and the deploy command to `npx opennextjs-cloudflare deploy`. A plain `npm run build` only creates the Next.js output; deployment requires the OpenNext Worker output first.
 

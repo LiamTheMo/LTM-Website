@@ -38,6 +38,9 @@ jobs:
       - name: Lint
         run: npm run lint
 
+      - name: Unit regression tests
+        run: npm run test:unit
+
       - name: Generate Cloudflare types
         run: npm run cf-typegen
 

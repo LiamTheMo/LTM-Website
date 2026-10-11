@@ -222,7 +222,7 @@ export default function OutsideTechSection() {
               onClick={() => scrollToPhoto(activeIndex - 1)}
               disabled={activeIndex === 0}
               aria-label="Show previous Outside the Tech photo"
-              className="absolute left-3 top-1/2 z-10 flex h-11 w-11 -translate-y-1/2 items-center justify-center rounded-full border border-white/15 bg-black/20 text-white opacity-0 backdrop-blur-sm transition-all hover:bg-black/40 focus-visible:opacity-100 group-hover:opacity-100 disabled:pointer-events-none disabled:opacity-0"
+              className="absolute left-3 top-1/2 z-10 flex h-11 w-11 -translate-y-1/2 items-center justify-center rounded-full border border-white/15 bg-black/40 text-white opacity-100 backdrop-blur-sm transition-all hover:bg-black/55 focus-visible:opacity-100 md:opacity-0 md:group-hover:opacity-100 disabled:pointer-events-none disabled:opacity-0"
             >
               <ChevronIcon direction="left" />
             </button>
@@ -232,13 +232,13 @@ export default function OutsideTechSection() {
               onClick={() => scrollToPhoto(activeIndex + 1)}
               disabled={activeIndex === outsideTechPhotos.length - 1}
               aria-label="Show next Outside the Tech photo"
-              className="absolute right-3 top-1/2 z-10 flex h-11 w-11 -translate-y-1/2 items-center justify-center rounded-full border border-white/15 bg-black/20 text-white opacity-0 backdrop-blur-sm transition-all hover:bg-black/40 focus-visible:opacity-100 group-hover:opacity-100 disabled:pointer-events-none disabled:opacity-0"
+              className="absolute right-3 top-1/2 z-10 flex h-11 w-11 -translate-y-1/2 items-center justify-center rounded-full border border-white/15 bg-black/40 text-white opacity-100 backdrop-blur-sm transition-all hover:bg-black/55 focus-visible:opacity-100 md:opacity-0 md:group-hover:opacity-100 disabled:pointer-events-none disabled:opacity-0"
             >
               <ChevronIcon direction="right" />
             </button>
           </div>
 
-          <div className="mt-4 flex justify-center gap-2" aria-label="Choose a gallery photo">
+          <div className="mt-4 flex flex-wrap justify-center gap-1" aria-label="Choose a gallery photo">
             {outsideTechPhotos.map((photo, index) => (
               <button
                 key={photo.src}
@@ -246,10 +246,15 @@ export default function OutsideTechSection() {
                 onClick={() => scrollToPhoto(index)}
                 aria-label={`Show photo ${index + 1}`}
                 aria-current={activeIndex === index ? "true" : undefined}
-                className={`h-2 rounded-full transition-all ${
-                  activeIndex === index ? "w-6 bg-accent" : "w-2 bg-border hover:bg-text-muted"
-                }`}
-              />
+                className="flex h-11 w-11 items-center justify-center rounded-lg transition-colors hover:bg-surface focus-visible:bg-surface"
+              >
+                <span
+                  aria-hidden="true"
+                  className={`h-2 rounded-full transition-all ${
+                    activeIndex === index ? "w-6 bg-accent" : "w-2 bg-border"
+                  }`}
+                />
+              </button>
             ))}
           </div>
         </div>
