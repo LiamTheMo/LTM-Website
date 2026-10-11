@@ -99,7 +99,7 @@ try {
     await context.close();
     console.log(`PASS ${name}: ${routes.length} routes, navigation/gallery/form smoke`);
   }
-  await writeFile(`${screenshots}/timings.json`, JSON.stringify(measurements, null, 2) + "\\n");
+  await writeFile(`${screenshots}/timings.json`, JSON.stringify(measurements, null, 2) + "\n");
 } finally {
   if (browser) await browser.close();
   if (server.pid) {
