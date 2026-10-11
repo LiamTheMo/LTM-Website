@@ -95,7 +95,7 @@ try {
     await page.goto(ORIGIN + "/contact", { waitUntil: "domcontentloaded" });
     await page.getByLabel("What's this about?").selectOption("other");
     await page.getByRole("button", { name: "Prepare email draft" }).click();
-    await page.getByRole("alert").waitFor({ state: "visible" });
+    await page.locator('form [role="alert"]').waitFor({ state: "visible" });
 
     assert.deepEqual(errors, [], `${name} browser errors: ${errors.join("; ")}`);
     await context.close();
