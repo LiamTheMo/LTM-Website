@@ -81,8 +81,8 @@ The resulting v2.12 line is intended to be the clean source for the final `v3.00
 
 ## Repository / deployment follow-up
 
-- Keep GitHub Actions as the only production deployment path and keep the retired Cloudflare Git build integration disconnected.
-- `main` is currently not protected by branch protection. A GitHub ruleset requiring pull requests and CI remains optional defense-in-depth repository administration.
+- Cloudflare Workers Builds is the only production deployment path, triggered from `main`. GitHub Actions must remain validation-only.
+- Verify the current GitHub rulesets and branch protection settings separately; the original launch-time observation that `main` was unprotected may no longer be accurate.
 - Continue using minor branches for implementation and merge completed work into the active version branch before any release PR to `main`.
 
 ## Launch rule
