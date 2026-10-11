@@ -68,7 +68,11 @@ export function parseContributionCalendar(html: string): ParsedContributionCalen
 
     // Keep the most informative representation when both table and SVG cells appear.
     const existing = byDate.get(date);
-    if (!existing || (existing.count === null && count !== null)) {
+    if (
+      !existing ||
+      (existing.count === null && count !== null) ||
+      (existing.count === 0 && count !== null && count > 0)
+    ) {
       byDate.set(date, { date, count, level: level as 0 | 1 | 2 | 3 | 4, description });
     }
   }
