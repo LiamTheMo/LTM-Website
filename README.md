@@ -4,15 +4,15 @@ Personal portfolio website for **Liam Mo**, built around software development, p
 
 **Live site:** https://liamthemo.com
 
-The former service-first site has been rebuilt as a personal developer portfolio. The primary positioning is **Fullstack Developer**, supported by work across web applications, games, automation, tooling, and UI implementation. The v3.00 line is the finalized portfolio baseline, with only owner-supplied photos and the final resume still being added as content polish.
+The former service-first site has been rebuilt as a personal developer portfolio. The primary positioning is **Fullstack Developer**, supported by work across web applications, games, automation, tooling, and UI implementation. The v3.00 line is the portfolio baseline. Subsequent v3.03 maintenance includes data reliability, updated projects, gallery polish, and improved visitor metrics; the public resume asset is still pending.
 
 ## Current development line
 
 | Item | Value |
 | --- | --- |
 | Pre-revamp snapshot | `v2.00` |
-| Current major branch | `v3.00` |
-| Current phase | Final content polish — profile photos, Outside the Tech gallery, and final resume |
+| Current major branch | `v3.03` |
+| Current phase | Portfolio reliability, content accuracy, accessibility, and UX audit |
 | Production domain | `liamthemo.com` |
 
 `v2.00` is the preserved snapshot of the website before the portfolio revamp and should not be rewritten.
@@ -53,12 +53,14 @@ This repository uses version branches as stable major branches.
 Example:
 
 ```text
-v3.00
-  └─ docs/v3.00-readme-refresh
-       └─ merge back into v3.00
+v3.03
+  └─ fix/v3.03-portfolio-audit-improvements
+       └─ merge back into v3.03
 
-v3.00 finalized
-  └─ future major editor/CMS work begins on v4.00
+v3.03 validated
+  └─ merge v3.03 into main for Cloudflare production deployment
+
+Future editor/CMS development begins on a new minor branch from v4.00
 ```
 
 ## Stack
