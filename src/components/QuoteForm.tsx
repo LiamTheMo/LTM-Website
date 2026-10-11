@@ -141,6 +141,8 @@ export default function QuoteForm({ initialService = "" }: QuoteFormProps) {
   const [contactMethod, setContactMethod] = useState("email");
   const [fieldErrors, setFieldErrors] = useState<FieldErrors>({});
   const [status, setStatus] = useState<"idle" | "prepared">("idle");
+  const [draft, setDraft] = useState<{ mailtoHref: string; copyText: string } | null>(null);
+  const [copied, setCopied] = useState(false);
   const summaryRef = useRef<HTMLDivElement>(null);
 
   if (status === "prepared") {
@@ -157,14 +159,40 @@ export default function QuoteForm({ initialService = "" }: QuoteFormProps) {
           <h2 className="text-h3 text-text">Email draft prepared</h2>
         </div>
         <p className="mx-auto mt-3 max-w-[48ch] text-body text-text-muted">
-          Your email app should open with your message. Review it and press send
-          to finish; this site does not send it automatically. If no app opens,
-          email{" "}
-          <a className="text-accent underline" href="mailto:contact@liamthemo.com">
-            contact@liamthemo.com
-          </a>
-          .
+          Review and send the message in your email app. Nothing has been sent
+          automatically. If no app opens, use the buttons below or copy the
+          prepared text into an email to contact@liamthemo.com.
         </p>
+        <div className="mt-6 flex flex-wrap items-center justify-center gap-3">
+          <a href={draft?.mailtoHref ?? "mailto:contact@liamthemo.com"} className="inline-flex min-h-11 items-center rounded-lg bg-accent px-5 font-semibold text-bg hover:bg-accent-hover">
+            Open email app
+          </a>
+          <button
+            type="button"
+            onClick={async () => {
+              if (!draft || !navigator.clipboard) return;
+              try {
+                await navigator.clipboard.writeText(draft.copyText);
+                setCopied(true);
+              } catch {
+                setCopied(false);
+              }
+            }}
+            className="inline-flex min-h-11 items-center rounded-lg border border-border px-5 text-text hover:border-accent"
+          >
+            {copied ? "Copied" : "Copy email message"}
+          </button>
+        </div>
+        <details className="mt-5 text-left">
+          <summary className="cursor-pointer text-small text-accent">View message to copy manually</summary>
+          <textarea
+            readOnly
+            aria-label="Prepared email text"
+            value={draft?.copyText ?? ""}
+            rows={8}
+            className="mt-3 w-full resize-y rounded-lg border border-border bg-surface-2 p-3 text-small text-text"
+          />
+        </details>
       </div>
     );
   }
@@ -211,11 +239,13 @@ export default function QuoteForm({ initialService = "" }: QuoteFormProps) {
       "",
       value.description,
     ];
-    setFieldErrors({});
+    const subject = `Website inquiry from ${value.name}`;
+    const body = details.join("\n");
+    const mailtoHref = `mailto:contact@liamthemo.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+    setDraft({ mailtoHref, copyText: `To: contact@liamthemo.com\nSubject: ${subject}\n\n${body}` });
+    setCopied(false);
     setStatus("prepared");
-    window.location.assign(`mailto:contact@liamthemo.com?subject=${encodeURIComponent(
-      `Website inquiry from ${value.name}`,
-    )}&body=${encodeURIComponent(details.join("\n"))}`);
+    window.location.assign(mailtoHref);
   }
 
   function applyErrors(errors: QuoteValidationError[]) {
