@@ -1,4 +1,4 @@
-const GITHUB_USERNAME = "OrangeCheasy";
+const GITHUB_USERNAME = "LiamTheMo";
 const GITHUB_API_BASE = "https://api.github.com";
 const GITHUB_PROFILE_URL = `https://github.com/${GITHUB_USERNAME}`;
 const GITHUB_CONTRIBUTIONS_URL = `https://github.com/users/${GITHUB_USERNAME}/contributions`;
