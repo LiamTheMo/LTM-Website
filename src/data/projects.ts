@@ -62,8 +62,8 @@ export const projects: Project[] = [
     ],
     role: "Design, Development, Deployment",
     year: "2025",
-    // sourceUrl: omitted — the repo is private (see the root README's
-    // license notice), so there's no public link to send "View Source" to.
+    // The source repository is public but remains proprietary under the license.
+    sourceUrl: "https://github.com/LiamTheMo/LTM-Website",
     //
     // externalLink (doubles as the "Live Site" button on this template, and
     // feeds the sidebar's Link row) — the real domain, owner-confirmed
@@ -142,12 +142,12 @@ export const projects: Project[] = [
       alt: "Screenshot of the LTM Todo dashboard with day-by-day planning and calendar navigation.",
     },
     summary:
-      "An ad-free, installable personal productivity app with a first-party task and calendar model, designed for desktop, iPhone, and iPad.",
+      "An ad-free, installable task manager and calendar for desktop, iPhone, and iPad, with offline access and cross-device account sync.",
     problem:
       "A lightweight personal planner should make it quick to capture tasks and see the day’s schedule without depending on a third-party calendar or adding artificial limits.",
     solution:
-      "The app combines fast task capture, chronological planning, due dates, and planned-work blocks. It stores data locally in the browser with IndexedDB; Web Push reminders use a per-browser queue. There are currently no accounts or cross-device task sync.",
-    sourceUrl: "https://github.com/OrangeCheasy/LTM-Todo-App",
+      "The app combines task capture, calendars, scheduled work, reminders, and document-based task importing. It stores interactive data locally in IndexedDB, with signed-in synchronization backed by Cloudflare infrastructure and support for offline changes.",
+    sourceUrl: "https://github.com/LiamTheMo/LTM-Todo-App",
     stack: ["TypeScript", "Next.js", "React", "IndexedDB", "Cloudflare"],
     icon: "✓",
     featured: true,
@@ -168,7 +168,7 @@ export const projects: Project[] = [
       "A private email product needs a polished client and a backend that can handle message metadata, raw email, attachments, and secure sign-in.",
     solution:
       "The source-visible project pairs a React and TypeScript webmail client with a Cloudflare Workers API, D1 metadata, and R2 storage for raw messages and attachments. Production mailboxes, credentials, stored email, connected accounts, and infrastructure remain private.",
-    sourceUrl: "https://github.com/OrangeCheasy/LTM-Email-Service",
+    sourceUrl: "https://github.com/LiamTheMo/LTM-Email-Service",
     stack: ["React", "TypeScript", "Cloudflare Workers", "D1", "R2"],
     icon: "✉",
     featured: true,
@@ -221,7 +221,7 @@ export const projects: Project[] = [
       "Factory games can lose their focus to oversized menus and unrelated progression systems. Tiny Factory is designed to make the production chain itself the main attraction.",
     solution:
       "The documented core loop is produce, process, sell, earn Coins, and use a free machine roll to decide how to rebuild and expand. The project is being developed in small validation-focused versions, so this case study describes its intended core loop rather than claiming every planned system is released.",
-    sourceUrl: "https://github.com/OrangeCheasy/RBLX-Tiny-Factory",
+    sourceUrl: "https://github.com/LiamTheMo/RBLX-Tiny-Factory",
     stack: ["Luau", "Roblox"],
     featured: false,
   },
@@ -237,7 +237,7 @@ export const projects: Project[] = [
       "Large multiplayer worlds are usually hidden beyond a player’s normal render distance, and joining late can mean exploring just to populate distant terrain.",
     solution:
       "The mod streams distant terrain to compatible clients and includes Far Players, which shows distant players with name tags, equipment, and mounts. The README documents Fabric, NeoForge, and Paper server support, plus an optional Xaero World Map bridge.",
-    sourceUrl: "https://github.com/OrangeCheasy/MC-Voxy-Server-Port",
+    sourceUrl: "https://github.com/LiamTheMo/MC-Voxy-Server-Port",
     stack: ["Java", "Fabric", "NeoForge", "Paper"],
     featured: false,
   },
