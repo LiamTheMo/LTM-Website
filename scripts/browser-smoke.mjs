@@ -11,10 +11,13 @@ import { mkdir, writeFile } from "node:fs/promises";
 import { spawn } from "node:child_process";
 import { setTimeout as wait } from "node:timers/promises";
 import { chromium } from "playwright";
+import AxeBuilder from "@axe-core/playwright";
 
 const ORIGIN = "http://127.0.0.1:3000";
 const screenshots = "artifacts/browser-smoke";
 const measurements = [];
+const accessibilityResults = [];
+const accessibilityFailures = [];
 const routes = ["/", "/projects", "/about", "/experience", "/contact", "/projects/this-website", "/projects/ltm-todo-app"];
 
 async function ready() {
@@ -70,6 +73,14 @@ try {
           fcpMs: fcp ? Math.round(fcp.startTime) : null,
         };
       }, { device: name, route }));
+      const axe = await new AxeBuilder({ page })
+        .withTags(["wcag2a", "wcag2aa", "wcag21a", "wcag21aa", "wcag22aa"])
+        .analyze();
+      const findings = axe.violations.map(({ id, impact, description, nodes }) => ({
+        id, impact, description, nodes: nodes.map(({ target, failureSummary }) => ({ target, failureSummary })),
+      }));
+      accessibilityResults.push({ device: name, route, violations: findings });
+      if (findings.length) accessibilityFailures.push({ device: name, route, findings });
       await page.screenshot({
         path: `${screenshots}/${name}-${route === "/" ? "home" : route.replaceAll("/", "-").replace(/^-/, "")}.png`,
         fullPage: true,
@@ -102,6 +113,8 @@ try {
     console.log(`PASS ${name}: ${routes.length} routes, navigation/gallery/form smoke`);
   }
   await writeFile(`${screenshots}/timings.json`, JSON.stringify(measurements, null, 2) + "\n");
+  await writeFile(`${screenshots}/accessibility.json`, JSON.stringify(accessibilityResults, null, 2) + "\n");
+  assert.equal(accessibilityFailures.length, 0, `WCAG violations: ${JSON.stringify(accessibilityFailures).slice(0, 12000)}`);
 } finally {
   if (browser) await browser.close();
   if (server.pid) {
