@@ -50,7 +50,8 @@ try {
     page.on("pageerror", (error) => errors.push(error.message));
 
     for (const route of routes) {
-      const response = await page.goto(ORIGIN + route, { waitUntil: "networkidle", timeout: 30000 });
+      const response = await page.goto(ORIGIN + route, { waitUntil: "domcontentloaded", timeout: 30000 });
+      await page.locator("h1").waitFor({ state: "visible", timeout: 15000 });
       assert.equal(response?.status(), 200, `${name} ${route} returned ${response?.status()}`);
       assert.equal(await page.locator("h1").count(), 1, `${name} ${route} does not have one h1`);
       const viewportOverflow = await page.evaluate(() =>
@@ -76,7 +77,7 @@ try {
       });
     }
 
-    await page.goto(ORIGIN, { waitUntil: "networkidle" });
+    await page.goto(ORIGIN, { waitUntil: "domcontentloaded" });
     const gallery = page.getByRole("region", { name: "Outside the Tech photo gallery" });
     await gallery.scrollIntoViewIfNeeded();
     await page.getByRole("button", { name: "Show photo 2", exact: true }).click();
@@ -90,7 +91,7 @@ try {
       assert.equal(new URL(page.url()).pathname, "/projects", "Mobile navigation failed");
     }
 
-    await page.goto(ORIGIN + "/contact", { waitUntil: "networkidle" });
+    await page.goto(ORIGIN + "/contact", { waitUntil: "domcontentloaded" });
     await page.getByLabel("What's this about?").selectOption("other");
     await page.getByRole("button", { name: "Prepare email draft" }).click();
     await page.getByRole("alert").waitFor({ state: "visible" });
