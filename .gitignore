@@ -12,6 +12,7 @@
 
 # testing
 /coverage
+/artifacts/browser-smoke/
 
 # next.js
 /.next/
