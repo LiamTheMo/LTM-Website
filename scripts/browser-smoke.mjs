@@ -88,6 +88,7 @@ try {
     if (name === "mobile") {
       await page.getByRole("button", { name: "Open menu" }).click();
       await page.getByRole("navigation", { name: "Mobile navigation" }).getByRole("link", { name: "Projects" }).click();
+      await page.waitForURL("**/projects", { timeout: 15000 });
       assert.equal(new URL(page.url()).pathname, "/projects", "Mobile navigation failed");
     }
 
