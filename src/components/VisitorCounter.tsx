@@ -47,13 +47,13 @@ export default function VisitorCounter() {
       ? "Visitor count loading"
       : count === null
         ? "Visitor count unavailable"
-        : `Visited by ${count.toLocaleString()} ${count === 1 ? "person" : "people"}`;
+        : `Visitors (approx.): ${count.toLocaleString()}`;
 
   return (
     <p
       className="text-caption text-text-muted"
       aria-live="polite"
-      title="Anonymous browser-based approximation. No personal visitor identifiers are stored."
+      title="Estimated distinct browsers with this site cookie over the past year, not unique people. No personal visitor identifiers are stored."
     >
       {label}
     </p>

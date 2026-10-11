@@ -1,4 +1,7 @@
-const GITHUB_USERNAME = "OrangeCheasy";
+import { parseContributionCalendar, type GitHubContributionDay } from "@/lib/github-contributions";
+export type { GitHubContributionDay } from "@/lib/github-contributions";
+
+const GITHUB_USERNAME = "LiamTheMo";
 const GITHUB_API_BASE = "https://api.github.com";
 const GITHUB_PROFILE_URL = `https://github.com/${GITHUB_USERNAME}`;
 const GITHUB_CONTRIBUTIONS_URL = `https://github.com/users/${GITHUB_USERNAME}/contributions`;
@@ -33,13 +36,6 @@ interface GitHubRepositoryResponse {
   fork: boolean;
   archived: boolean;
   pushed_at: string;
-}
-
-export interface GitHubContributionDay {
-  date: string;
-  count: number | null;
-  level: 0 | 1 | 2 | 3 | 4;
-  description: string;
 }
 
 export interface GitHubPublicRepository {
@@ -80,85 +76,6 @@ async function fetchGitHub<T>(path: string): Promise<T | null> {
   }
 }
 
-function decodeHtml(value: string) {
-  return value
-    .replaceAll("&amp;", "&")
-    .replaceAll("&quot;", '"')
-    .replaceAll("&#39;", "'")
-    .replaceAll("&lt;", "<")
-    .replaceAll("&gt;", ">");
-}
-
-function textContent(value: string) {
-  return decodeHtml(value.replace(/<[^>]+>/g, "").replace(/\s+/g, " ").trim());
-}
-
-function attribute(tag: string, name: string) {
-  const match = tag.match(new RegExp(`${name}=["']([^"']+)["']`, "i"));
-  return match?.[1] ?? null;
-}
-
-function countFromDescription(description: string) {
-  if (/^no contributions?/i.test(description)) {
-    return 0;
-  }
-
-  const match = description.match(/^([\d,]+)\s+contributions?/i);
-  return match ? Number(match[1].replaceAll(",", "")) : null;
-}
-
-function parseContributionCalendar(html: string) {
-  const descriptions = new Map<string, string>();
-  const tooltipPattern = /<tool-tip\b([^>]*)>([\s\S]*?)<\/tool-tip>/gi;
-
-  for (const match of html.matchAll(tooltipPattern)) {
-    const tooltipTag = match[1] ?? "";
-    const target = attribute(tooltipTag, "for");
-    if (!target) continue;
-    descriptions.set(target, textContent(match[2] ?? ""));
-  }
-
-  const contributionDays: GitHubContributionDay[] = [];
-  const dayPattern = /<(?:td|rect)\b[^>]*\bdata-date=["']\d{4}-\d{2}-\d{2}["'][^>]*>/gi;
-
-  for (const match of html.matchAll(dayPattern)) {
-    const tag = match[0];
-    const date = attribute(tag, "data-date");
-    const rawLevel = Number(attribute(tag, "data-level"));
-    const id = attribute(tag, "id");
-
-    if (!date || !Number.isInteger(rawLevel) || rawLevel < 0 || rawLevel > 4) {
-      continue;
-    }
-
-    const description =
-      (id ? descriptions.get(id) : null) ??
-      `${rawLevel === 0 ? "No" : "Public"} contributions on ${date}`;
-
-    contributionDays.push({
-      date,
-      count: countFromDescription(description),
-      level: rawLevel as 0 | 1 | 2 | 3 | 4,
-      description,
-    });
-  }
-
-  contributionDays.sort((a, b) => a.date.localeCompare(b.date));
-
-  const totalMatch = html.match(/([\d,]+)\s+contributions?\s+(?:in the last year|in \d{4})/i);
-  const parsedTotal = totalMatch ? Number(totalMatch[1].replaceAll(",", "")) : null;
-  const knownCounts = contributionDays.map((day) => day.count).filter((count) => count !== null);
-  const summedTotal =
-    knownCounts.length === contributionDays.length && contributionDays.length > 0
-      ? knownCounts.reduce<number>((total, count) => total + (count ?? 0), 0)
-      : null;
-
-  return {
-    contributionDays,
-    contributionCount: parsedTotal ?? summedTotal,
-  };
-}
-
 async function fetchContributionCalendar() {
   try {
     const response = await fetch(GITHUB_CONTRIBUTIONS_URL, {
@@ -173,7 +90,8 @@ async function fetchContributionCalendar() {
       return null;
     }
 
-    return parseContributionCalendar(await response.text());
+    const parsed = parseContributionCalendar(await response.text());
+    return parsed.contributionDays.length > 0 ? parsed : null;
   } catch {
     return null;
   }

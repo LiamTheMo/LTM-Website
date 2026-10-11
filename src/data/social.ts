@@ -11,7 +11,7 @@ export const socialLinks: readonly SocialLink[] = [
   {
     kind: "github",
     label: "GitHub",
-    href: "https://github.com/OrangeCheasy",
+    href: "https://github.com/LiamTheMo",
     external: true,
   },
   {
