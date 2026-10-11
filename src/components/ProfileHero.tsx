@@ -63,11 +63,11 @@ export default function ProfileHero() {
           </p>
 
           <div className="mt-8 flex flex-wrap gap-3">
-            <LinkButton href={profileContent.resumeHref} variant="primary" size="lg">
-              View Resume
-            </LinkButton>
-            <LinkButton href="/projects" variant="secondary" size="lg">
+            <LinkButton href="/projects" variant="primary" size="lg">
               View Projects
+            </LinkButton>
+            <LinkButton href="/contact" variant="secondary" size="lg">
+              Contact Me
             </LinkButton>
           </div>
         </div>
