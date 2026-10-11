@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef, useState, type PointerEvent } from "react";
+import { useRef, useState, type KeyboardEvent, type PointerEvent } from "react";
 import Image from "next/image";
 import { Section, SectionHeader } from "@/components/ui";
 
@@ -77,12 +77,14 @@ export default function OutsideTechSection() {
     const slides = Array.from(track.children) as HTMLElement[];
     if (slides.length === 0) return 0;
 
-    const viewportCenter = track.scrollLeft + track.clientWidth / 2;
+    const trackBounds = track.getBoundingClientRect();
+    const viewportCenter = trackBounds.left + trackBounds.width / 2;
     let nearestIndex = 0;
     let nearestDistance = Number.POSITIVE_INFINITY;
 
     slides.forEach((slide, index) => {
-      const slideCenter = slide.offsetLeft + slide.clientWidth / 2;
+      const bounds = slide.getBoundingClientRect();
+      const slideCenter = bounds.left + bounds.width / 2;
       const distance = Math.abs(slideCenter - viewportCenter);
 
       if (distance < nearestDistance) {
@@ -102,13 +104,21 @@ export default function OutsideTechSection() {
     const slide = track.children.item(nextIndex) as HTMLElement | null;
     if (!slide) return;
 
-    const centeredLeft = slide.offsetLeft - (track.clientWidth - slide.clientWidth) / 2;
+    const slideRect = slide.getBoundingClientRect();
+    const trackRect = track.getBoundingClientRect();
+    const centeredLeft = track.scrollLeft + slideRect.left - trackRect.left - (track.clientWidth - slideRect.width) / 2;
     const maxScrollLeft = track.scrollWidth - track.clientWidth;
 
     track.scrollTo({
       left: Math.max(0, Math.min(centeredLeft, maxScrollLeft)),
-      behavior: "smooth",
+      behavior: window.matchMedia("(prefers-reduced-motion: reduce)").matches ? "instant" : "smooth",
     });
+  }
+
+  function handleGalleryKeyDown(event: KeyboardEvent<HTMLDivElement>) {
+    if (event.key !== "ArrowLeft" && event.key !== "ArrowRight") return;
+    event.preventDefault();
+    scrollToPhoto(activeIndex + (event.key === "ArrowRight" ? 1 : -1));
   }
 
   function handleScroll() {
@@ -190,6 +200,7 @@ export default function OutsideTechSection() {
             <div
               ref={trackRef}
               onScroll={handleScroll}
+              onKeyDown={handleGalleryKeyDown}
               onPointerDown={handlePointerDown}
               onPointerMove={handlePointerMove}
               onPointerUp={endPointerDrag}
@@ -238,7 +249,7 @@ export default function OutsideTechSection() {
             </button>
           </div>
 
-          <div className="mt-4 flex flex-wrap justify-center gap-1" aria-label="Choose a gallery photo">
+          <div className="no-scrollbar mt-4 flex max-w-full justify-start gap-1 overflow-x-auto sm:justify-center" aria-label="Choose a gallery photo">
             {outsideTechPhotos.map((photo, index) => (
               <button
                 key={photo.src}
@@ -246,7 +257,7 @@ export default function OutsideTechSection() {
                 onClick={() => scrollToPhoto(index)}
                 aria-label={`Show photo ${index + 1}`}
                 aria-current={activeIndex === index ? "true" : undefined}
-                className="flex h-11 w-11 items-center justify-center rounded-lg transition-colors hover:bg-surface focus-visible:bg-surface"
+                className="flex h-11 w-11 shrink-0 items-center justify-center rounded-lg transition-colors hover:bg-surface focus-visible:bg-surface"
               >
                 <span
                   aria-hidden="true"
