@@ -7,13 +7,14 @@
  * No credentials or data are sent to the public site: this runs locally.
  */
 import assert from "node:assert/strict";
-import { mkdir } from "node:fs/promises";
+import { mkdir, writeFile } from "node:fs/promises";
 import { spawn } from "node:child_process";
 import { setTimeout as wait } from "node:timers/promises";
 import { chromium } from "playwright";
 
 const ORIGIN = "http://127.0.0.1:3000";
 const screenshots = "artifacts/browser-smoke";
+const measurements = [];
 const routes = ["/", "/projects", "/about", "/experience", "/contact", "/projects/this-website", "/projects/ltm-todo-app"];
 
 async function ready() {
@@ -56,6 +57,18 @@ try {
         document.documentElement.scrollWidth > innerWidth + 2,
       );
       assert.equal(viewportOverflow, false, `${name} ${route} has horizontal document overflow`);
+      measurements.push(await page.evaluate(({ device, route }) => {
+        const nav = performance.getEntriesByType("navigation")[0];
+        const fcp = performance.getEntriesByName("first-contentful-paint")[0];
+        return {
+          device,
+          route,
+          note: "local CI Chromium timing, not real-user Core Web Vitals",
+          ttfbMs: nav ? Math.round(nav.responseStart - nav.requestStart) : null,
+          dclMs: nav ? Math.round(nav.domContentLoadedEventEnd - nav.startTime) : null,
+          fcpMs: fcp ? Math.round(fcp.startTime) : null,
+        };
+      }, { device: name, route }));
       await page.screenshot({
         path: `${screenshots}/${name}-${route === "/" ? "home" : route.replaceAll("/", "-").replace(/^-/, "")}.png`,
         fullPage: true,
@@ -86,6 +99,7 @@ try {
     await context.close();
     console.log(`PASS ${name}: ${routes.length} routes, navigation/gallery/form smoke`);
   }
+  await writeFile(`${screenshots}/timings.json`, JSON.stringify(measurements, null, 2) + "\\n");
 } finally {
   if (browser) await browser.close();
   if (server.pid) {
