@@ -18,7 +18,7 @@ export default function ProjectCard({
     <li>
       <Link
         href={`/projects/${project.slug}`}
-        className="group flex h-full flex-col overflow-hidden rounded-[var(--radius-card)] border border-border bg-surface transition-transform duration-200 hover:-translate-y-0.5"
+        className="group flex h-full flex-col overflow-hidden rounded-[var(--radius-card)] border border-border bg-surface transition-[border-color,transform,box-shadow] duration-200 hover:-translate-y-0.5 hover:border-accent/50 hover:shadow-[0_16px_48px_-24px_var(--color-accent-dim)] focus-visible:border-accent motion-reduce:transform-none motion-reduce:transition-none"
       >
         <div className="relative aspect-[3/2] w-full overflow-hidden border-b border-border bg-surface-2">
           <CoverArt
@@ -26,7 +26,7 @@ export default function ProjectCard({
             priority={priority}
             decorative
             sizes="(min-width: 1024px) 33vw, (min-width: 640px) 50vw, 100vw"
-            imageClassName="transition-transform duration-300 group-hover:scale-[1.03]"
+            imageClassName="transition-transform duration-300 group-hover:scale-[1.03] motion-reduce:transform-none motion-reduce:transition-none"
           />
         </div>
 

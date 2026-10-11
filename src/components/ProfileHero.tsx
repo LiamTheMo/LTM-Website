@@ -7,14 +7,14 @@ import { socialLinks } from "@/data/social";
 
 function ProfileAvatar() {
   return (
-    <div className="relative h-16 w-16 shrink-0 overflow-hidden rounded-full border border-border bg-surface sm:h-20 sm:w-20">
+    <div className="relative h-20 w-20 shrink-0 overflow-hidden rounded-full border border-border bg-surface sm:h-24 sm:w-24">
       {profileContent.image ? (
         <Image
           src={profileContent.image.src}
           alt={profileContent.image.alt}
           fill
           priority
-          sizes="(min-width: 640px) 5rem, 4rem"
+          sizes="(min-width: 640px) 6rem, 5rem"
           className="object-cover"
         />
       ) : (
@@ -31,7 +31,8 @@ function ProfileAvatar() {
 
 export default function ProfileHero() {
   return (
-    <section aria-labelledby="profile-hero-title" className="border-b border-border/70">
+    <section aria-labelledby="profile-hero-title" className="relative isolate overflow-hidden border-b border-border/70">
+      <div aria-hidden="true" className="pointer-events-none absolute -right-28 -top-44 -z-10 h-96 w-96 rounded-full bg-accent/5 blur-3xl sm:right-0" />
       <Container className="py-[var(--space-section-compact)]">
         <div className="max-w-[var(--layout-reading)]">
           <div className="flex items-center gap-4 sm:gap-5">

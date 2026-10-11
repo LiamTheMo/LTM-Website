@@ -11,7 +11,9 @@
     "preview": "opennextjs-cloudflare build && opennextjs-cloudflare preview",
     "deploy": "opennextjs-cloudflare build && opennextjs-cloudflare deploy",
     "cf-typegen": "wrangler types --env-interface CloudflareEnv cloudflare-env.d.ts",
-    "test:unit": "node --experimental-strip-types --test tests/*.test.mjs"
+    "test:unit": "node --experimental-strip-types --test tests/*.test.mjs",
+    "smoke:browser": "node scripts/browser-smoke.mjs",
+    "check:links:remote": "node --experimental-strip-types scripts/check-external-links.mjs"
   },
   "dependencies": {
     "@opennextjs/cloudflare": "1.20.6",
