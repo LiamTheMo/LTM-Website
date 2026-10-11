@@ -92,6 +92,7 @@ Useful validation commands:
 ```bash
 npm run lint
 npm run test:unit
+npm run check:links:remote # optional external HTTP check; requires internet access
 npm run build
 npx tsc --noEmit
 npm run build:worker
@@ -100,6 +101,8 @@ npm run build:worker
 `npm run build` must remain the normal Next.js production build (`next build`). OpenNext invokes that script internally when creating the Worker artifact.
 
 `npm run build:worker` runs the OpenNext adapter and generates `.open-next/`, including `.open-next/worker.js` and `.open-next/assets`.
+
+Browser regression checks are run in a version-branch CI job using pinned Chromium. The job tests mobile, tablet, and desktop widths and uploads responsive screenshots and local load-timing baselines. To run it locally after a production build, install the pinned test-only Playwright dependency (`npm install --no-save --package-lock=false playwright@1.56.1`), install Chromium (`npx playwright install chromium`), then run `npm run smoke:browser`. The resulting `artifacts/browser-smoke/` directory is generated and must not be committed.
 
 For a local Cloudflare/OpenNext preview:
 
@@ -146,7 +149,8 @@ Start with:
 
 - [`docs/portfolio-revamp/README.md`](./docs/portfolio-revamp/README.md) — master redesign plan and homepage order
 - [`docs/portfolio-revamp/CURRENT-STATE-AUDIT.md`](./docs/portfolio-revamp/CURRENT-STATE-AUDIT.md) — current-site audit
-- [`docs/portfolio-revamp/LAUNCH-AUDIT.md`](./docs/portfolio-revamp/LAUNCH-AUDIT.md) — current launch/indexing state
+- [`docs/portfolio-revamp/LAUNCH-AUDIT.md`](./docs/portfolio-revamp/LAUNCH-AUDIT.md) — initial launch/indexing baseline
+- [`docs/portfolio-revamp/CURRENT-AUDIT-2026-10-11.md`](./docs/portfolio-revamp/CURRENT-AUDIT-2026-10-11.md) — current code changes, validation, and remaining external/manual work
 - `docs/portfolio-revamp/PHASE-XX-*.md` — phase-specific scope, implementation guidance, and acceptance criteria
 
 Legacy mockups and the old `CLAUDE.md`, `DEPLOYMENT.md`, and `TODO.md` documents have intentionally been removed. Do not use or recreate them as project specifications.
@@ -157,7 +161,7 @@ Production deployment is managed by Cloudflare's automatic Git integration from 
 
 ### Deployment workflow
 
-Cloudflare's automatic Git integration is the only production deployment path. GitHub Actions must never deploy or publish production. The repository currently has only CI validation and CodeQL workflows; neither deploys. CI also runs dependency-free Node unit regression tests for external-data parsing.
+Cloudflare's automatic Git integration is the only production deployment path. GitHub Actions must never deploy or publish production. The repository currently has only CI validation and CodeQL workflows; neither deploys. CI also runs dependency-free Node unit regression tests for external-data parsing and portfolio content, plus a Chromium responsive smoke job.
 
 For Cloudflare Workers Builds, set the build command to `npm run build:worker` and the deploy command to `npx opennextjs-cloudflare deploy`. A plain `npm run build` only creates the Next.js output; deployment requires the OpenNext Worker output first.
 

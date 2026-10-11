@@ -6,6 +6,7 @@ const GITHUB_API_BASE = "https://api.github.com";
 const GITHUB_PROFILE_URL = `https://github.com/${GITHUB_USERNAME}`;
 const GITHUB_CONTRIBUTIONS_URL = `https://github.com/users/${GITHUB_USERNAME}/contributions`;
 const GITHUB_REVALIDATE_SECONDS = 60 * 60;
+const GITHUB_TIMEOUT_MS = 6_000;
 const FEATURED_REPOSITORY_NAMES = [
   "LTM-Todo-App",
   "LTM-Email-Service",
@@ -63,6 +64,7 @@ async function fetchGitHub<T>(path: string): Promise<T | null> {
   try {
     const response = await fetch(`${GITHUB_API_BASE}${path}`, {
       headers: githubHeaders,
+      signal: AbortSignal.timeout(GITHUB_TIMEOUT_MS),
       next: { revalidate: GITHUB_REVALIDATE_SECONDS },
     });
 
@@ -83,6 +85,7 @@ async function fetchContributionCalendar() {
         Accept: "text/html",
         "User-Agent": "liamthemo-portfolio",
       },
+      signal: AbortSignal.timeout(GITHUB_TIMEOUT_MS),
       next: { revalidate: GITHUB_REVALIDATE_SECONDS },
     });
 

@@ -72,7 +72,10 @@ export default function ScreenshotCarousel({
   function scrollByPage(direction: 1 | -1) {
     const track = trackRef.current;
     if (!track) return;
-    track.scrollBy({ left: direction * track.clientWidth, behavior: "smooth" });
+    track.scrollBy({
+      left: direction * track.clientWidth,
+      behavior: window.matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth",
+    });
   }
 
   return (
@@ -83,7 +86,7 @@ export default function ScreenshotCarousel({
             type="button"
             onClick={() => scrollByPage(-1)}
             aria-label="Scroll screenshots left"
-            className="flex h-9 w-9 items-center justify-center rounded-full border border-border text-text-muted transition-colors hover:border-text-muted hover:text-text"
+            className="flex h-11 w-11 items-center justify-center rounded-full border border-border text-text-muted transition-colors hover:border-text-muted hover:text-text"
           >
             <ChevronIcon direction="left" />
           </button>
@@ -91,7 +94,7 @@ export default function ScreenshotCarousel({
             type="button"
             onClick={() => scrollByPage(1)}
             aria-label="Scroll screenshots right"
-            className="flex h-9 w-9 items-center justify-center rounded-full border border-accent bg-accent text-bg transition-colors hover:border-accent-hover hover:bg-accent-hover"
+            className="flex h-11 w-11 items-center justify-center rounded-full border border-accent bg-accent text-bg transition-colors hover:border-accent-hover hover:bg-accent-hover"
           >
             <ChevronIcon direction="right" />
           </button>
@@ -100,6 +103,11 @@ export default function ScreenshotCarousel({
 
       <div
         ref={trackRef}
+        onKeyDown={(event) => {
+          if (event.key !== "ArrowLeft" && event.key !== "ArrowRight") return;
+          event.preventDefault();
+          scrollByPage(event.key === "ArrowRight" ? 1 : -1);
+        }}
         // tabIndex + role/aria-label: the native scroll container is
         // keyboard-focusable and screen-reader-announced as one unit, since
         // arrow-key scrolling only works on a focused scroller (§12).

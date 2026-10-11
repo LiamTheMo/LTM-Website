@@ -41,6 +41,27 @@ function unavailableResponse() {
   );
 }
 
+/**
+ * Read-only endpoint for checking the public aggregate without recording a
+ * new visit. A failure is represented explicitly as null, not a fake zero.
+ */
+export async function GET() {
+  try {
+    const { env } = await getCloudflareContext({ async: true });
+    const db = env.VISITOR_DB;
+    if (!db) return unavailableResponse();
+    await ensureVisitorSchema(db);
+    const row = await db.prepare("SELECT count FROM visitor_counter WHERE id = 1").first<VisitorCountRow>();
+    return NextResponse.json(
+      { count: row && Number.isFinite(row.count) ? row.count : null },
+      { headers: { "Cache-Control": "no-store" } },
+    );
+  } catch {
+    console.error("Visitor counter read failed");
+    return unavailableResponse();
+  }
+}
+
 export async function POST(request: NextRequest) {
   if (!isSameOriginRequest(request)) {
     return NextResponse.json(

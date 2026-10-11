@@ -148,6 +148,7 @@ export const projects: Project[] = [
     solution:
       "The app combines task capture, calendars, scheduled work, reminders, and document-based task importing. It stores interactive data locally in IndexedDB, with signed-in synchronization backed by Cloudflare infrastructure and support for offline changes.",
     sourceUrl: "https://github.com/LiamTheMo/LTM-Todo-App",
+    externalLink: { href: "https://todo.liamthemo.com", label: "Open LTM Todo" },
     stack: ["TypeScript", "Next.js", "React", "IndexedDB", "Cloudflare"],
     icon: "✓",
     featured: true,

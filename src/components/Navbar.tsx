@@ -110,7 +110,7 @@ export default function Navbar() {
                     <Link
                       href={link.href}
                       aria-current={active ? "page" : undefined}
-                      className={`relative inline-flex h-9 items-center rounded-[var(--radius-control)] px-3 text-metadata font-medium transition-colors ${
+                      className={`relative inline-flex min-h-11 items-center rounded-[var(--radius-control)] px-3 text-metadata font-medium transition-colors ${
                         active
                           ? "bg-surface-2 text-text"
                           : "text-text-muted hover:bg-surface hover:text-text"
@@ -137,7 +137,7 @@ export default function Navbar() {
           onClick={() => setOpen((value) => !value)}
           aria-expanded={open}
           aria-controls="mobile-menu"
-          className="inline-flex h-10 w-10 items-center justify-center rounded-[var(--radius-control)] text-text transition-colors hover:bg-surface md:hidden"
+          className="inline-flex h-11 w-11 items-center justify-center rounded-[var(--radius-control)] text-text transition-colors hover:bg-surface md:hidden"
         >
           <span className="sr-only">{open ? "Close menu" : "Open menu"}</span>
           <svg

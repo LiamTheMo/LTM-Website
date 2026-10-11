@@ -20,8 +20,9 @@ export default function sitemap(): MetadataRoute.Sitemap {
   ];
   const projectRoutes = projects.map((project) => `/projects/${project.slug}`);
 
+  // Omit lastModified until real content/update timestamps are tracked.
+  // Claiming every page changed at request time produces misleading crawl hints.
   return [...staticRoutes, ...projectRoutes].map((path) => ({
     url: `${BASE_URL}${path}`,
-    lastModified: new Date(),
   }));
 }
