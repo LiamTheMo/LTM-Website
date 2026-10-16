@@ -21,11 +21,11 @@ export const projects: Project[] = [
       alt: "The orange-and-black portfolio cover artwork with a website mockup and featured work.",
     },
     summary:
-      "A fullstack developer portfolio built to present Liam’s projects, technical range, and experience in one fast, data-driven site.",
+      "A responsive, data-driven developer portfolio featuring project case studies, experience, GitHub activity, and a direct contact path.",
     problem:
       "Project details, technical work, and experience needed a clear home that is easy to browse and maintain as the portfolio grows.",
     solution:
-      "Built with Next.js (App Router) and TypeScript, with project content generated from typed data files and deployed to Cloudflare Workers. The site combines project case studies, experience, contact, and live public GitHub activity.",
+      "Built with Next.js 16, React, TypeScript, and Tailwind CSS. Typed project data powers the homepage and individual case studies. OpenNext deploys to Cloudflare Workers, with public GitHub activity and responsive layouts.",
     // overview/whatIBuilt/features/role/year: verbatim from
     // individual-project-page-mockup.png, which is owner-authored copy for
     // this specific project — not template filler (see the page's file
@@ -146,7 +146,7 @@ export const projects: Project[] = [
     problem:
       "A lightweight personal planner should make it quick to capture tasks and see the day’s schedule without depending on a third-party calendar or adding artificial limits.",
     solution:
-      "The app combines task capture, calendars, scheduled work, reminders, and document-based task importing. It stores interactive data locally in IndexedDB, with signed-in synchronization backed by Cloudflare infrastructure and support for offline changes.",
+      "Built task and project management, first-party calendars, recurring work, reminders, and a review-first batch importer for PDF, DOCX, CSV, text, and course outlines. IndexedDB supports offline editing; account synchronization uses Cloudflare D1 and Durable Objects with per-device sessions.",
     sourceUrl: "https://github.com/LiamTheMo/LTM-Todo-App",
     externalLink: { href: "https://todo.liamthemo.com", label: "Open LTM Todo" },
     stack: ["TypeScript", "Next.js", "React", "IndexedDB", "Cloudflare"],
@@ -164,15 +164,37 @@ export const projects: Project[] = [
       alt: "Screenshot of LTM Mail’s inbox with mailbox folders, account switcher, and message view.",
     },
     summary:
-      "A responsive webmail client and Cloudflare-backed email service with passkeys, mailbox search, attachments, and optional Gmail connections.",
+      "An installable webmail client with native inboxes, optional Gmail accounts, passkey-protected administration, attachments, and search.",
     problem:
       "A private email product needs a polished client and a backend that can handle message metadata, raw email, attachments, and secure sign-in.",
     solution:
-      "The source-visible project pairs a React and TypeScript webmail client with a Cloudflare Workers API, D1 metadata, and R2 storage for raw messages and attachments. Production mailboxes, credentials, stored email, connected accounts, and infrastructure remain private.",
+      "Built a React and TypeScript client backed by Cloudflare Workers, D1, R2, and Email Routing. It supports mailbox switching, threading, drafts, junk/archive/trash, account sessions, Gmail OAuth, and security audit logs. Sensitive administrator actions require fresh passkey approval. Live mailbox data and credentials remain private.",
     sourceUrl: "https://github.com/LiamTheMo/LTM-Email-Service",
-    stack: ["React", "TypeScript", "Cloudflare Workers", "D1", "R2"],
+    externalLink: { href: "https://email.liamthemo.com", label: "Open Webmail" },
+    stack: ["React", "TypeScript", "Vite", "Cloudflare Workers", "D1", "R2"],
     icon: "✉",
     featured: true,
+  },
+  {
+    slug: "hypixel-bazaar-tracker",
+    title: "Hypixel Bazaar Tracker",
+    services: [],
+    skills: ["Fullstack Development", "Market Analytics"],
+    cover: {
+      kind: "image",
+      // Genuine capture in the public tracker repository; Next/Image can serve AVIF/WebP.
+      src: "https://raw.githubusercontent.com/LiamTheMo/HYSB-Bazaar-Tracker/main/shots/landing-1440.png",
+      alt: "Screenshot of the Hypixel Bazaar Tracker market analytics dashboard.",
+    },
+    summary:
+      "A read-only Hypixel SkyBlock market dashboard for comparing craft margins, historical prices, and trading volume.",
+    problem:
+      "Bazaar price differences can be misleading without accounting for recipe costs, order liquidity, and shifting demand.",
+    solution:
+      "Built a Vite/React dashboard and a Cloudflare Worker API with typed pricing calculations, scheduled ingestion, and D1/KV/R2 storage. The repository documents craft profitability, time-of-day price patterns, and volume-adjusted comparisons. Automated ingestion is currently paused to control D1 usage, so live-data freshness is not guaranteed.",
+    sourceUrl: "https://github.com/LiamTheMo/HYSB-Bazaar-Tracker",
+    stack: ["TypeScript", "React", "Vite", "Cloudflare Workers", "D1", "KV", "R2"],
+    featured: false,
   },
   {
     slug: "fuse-factory",
@@ -215,31 +237,37 @@ export const projects: Project[] = [
     slug: "tiny-factory",
     title: "Tiny Factory",
     services: ["roblox"],
-    cover: { kind: "tile" },
+    cover: {
+      kind: "image",
+      src: "/portfolio/tiny-factory/cover.svg",
+      alt: "Illustration of droppers and processing machines connected by a conveyor belt.",
+    },
     summary:
-      "A validation-first Roblox factory game about rolling for machines, building compact production lines, and discovering profitable combinations.",
+      "An in-development Roblox factory game about rolling machines, assembling production lines, and maximizing item value.",
     problem:
       "Factory games can lose their focus to oversized menus and unrelated progression systems. Tiny Factory is designed to make the production chain itself the main attraction.",
     solution:
-      "The documented core loop is produce, process, sell, earn Coins, and use a free machine roll to decide how to rebuild and expand. The project is being developed in small validation-focused versions, so this case study describes its intended core loop rather than claiming every planned system is released.",
+      "The Luau project centers on weighted machine rolls, placement, conveyors, droppers, upgraders, sellers, and factory persistence. Its v1.00 MVP remains incomplete; visuals, mobile usability, economy balance, and saving reliability still need validation.",
     sourceUrl: "https://github.com/LiamTheMo/RBLX-Tiny-Factory",
     stack: ["Luau", "Roblox"],
     featured: false,
   },
   {
-    slug: "lod-server-support",
-    title: "LOD Server Support",
-    services: [],
-    skills: ["Minecraft Modding", "Java"],
-    cover: { kind: "tile" },
+    slug: "tank-blast",
+    title: "Tank Blast",
+    services: ["roblox"],
+    cover: {
+      kind: "image",
+      src: "/portfolio/tank-blast/cover.svg",
+      alt: "Illustration of toy-like tanks and a ricocheting projectile from an elevated angle.",
+    },
     summary:
-      "A multiplayer mod that lets Voxy clients view distant server terrain without exploring it first, with far-away players represented in LOD terrain.",
+      "An in-development Roblox tank-combat dungeon crawler with ricochets, tank collection, world progression, and co-op-oriented PvE.",
     problem:
-      "Large multiplayer worlds are usually hidden beyond a player’s normal render distance, and joining late can mean exploring just to populate distant terrain.",
+      "Arcade tank combat needs responsive controls and readable projectile bounces while supporting progression beyond individual matches.",
     solution:
-      "The mod streams distant terrain to compatible clients and includes Far Players, which shows distant players with name tags, equipment, and mounts. The README documents Fabric, NeoForge, and Paper server support, plus an optional Xaero World Map bridge.",
-    sourceUrl: "https://github.com/LiamTheMo/MC-Voxy-Server-Port",
-    stack: ["Java", "Fabric", "NeoForge", "Paper"],
+      "Built modular, server-authoritative combat systems with responsive client movement, an elevated follow camera, room-based levels, tank collection, equipment, and run upgrades. World 1 content and a six-station lobby are implemented; published-place device, multiplayer, and lobby validation remains open.",
+    stack: ["Luau", "Roblox", "Rojo"],
     featured: false,
   },
   {
@@ -390,10 +418,13 @@ export const projects: Project[] = [
     title: "Echo Realms",
     // client: omitted — this is a personal project, not commissioned work.
     services: ["roblox"],
-    // TODO(owner): one screenshot of a dungeon room or a boss encounter would
-    // promote this to an image cover. The project is on hold, so this is low
-    // priority — the tile is not blocking anything.
-    cover: { kind: "tile" },
+    // Concept illustration, not a gameplay screenshot. Replace it with a real
+    // dungeon capture once there is suitable owner-approved gameplay footage.
+    cover: {
+      kind: "image",
+      src: "/portfolio/echo-realms/cover.svg",
+      alt: "Illustrated violet crystal representing the fantasy setting of Echo Realms.",
+    },
     summary:
       "A Roblox dungeon crawler built around reusable systems, readable enemy attacks, zone-based spawning, phased bosses, and per-item chance loot.",
     problem:

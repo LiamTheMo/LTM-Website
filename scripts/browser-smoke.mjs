@@ -18,7 +18,20 @@ const screenshots = "artifacts/browser-smoke";
 const measurements = [];
 const accessibilityResults = [];
 const accessibilityFailures = [];
-const routes = ["/", "/projects", "/about", "/experience", "/contact", "/projects/this-website", "/projects/ltm-todo-app"];
+const routes = [
+  "/",
+  "/projects",
+  "/about",
+  "/experience",
+  "/contact",
+  "/projects/this-website",
+  "/projects/ltm-todo-app",
+  "/projects/ltm-email-service",
+  "/projects/hypixel-bazaar-tracker",
+  "/projects/tiny-factory",
+  "/projects/tank-blast",
+  "/projects/echo-realms",
+];
 
 async function ready() {
   for (let attempt = 0; attempt < 100; attempt++) {

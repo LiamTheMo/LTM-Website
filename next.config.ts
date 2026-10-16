@@ -15,6 +15,18 @@ const securityHeaders = [
 ];
 
 const nextConfig: NextConfig = {
+  images: {
+    // The Bazaar screenshot comes from the owner's public repository.
+    // Keep the allowlist exact so other external images cannot be proxied.
+    remotePatterns: [
+      {
+        protocol: "https",
+        hostname: "raw.githubusercontent.com",
+        pathname: "/LiamTheMo/HYSB-Bazaar-Tracker/main/shots/**",
+      },
+    ],
+    formats: ["image/avif", "image/webp"],
+  },
   async headers() {
     return [
       {

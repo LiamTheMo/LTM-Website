@@ -10,6 +10,14 @@ import { mainNavigation } from "../src/data/site.ts";
 const root = process.cwd();
 const asset = (value) => path.join(root, "public", value.replace(/^\//, ""));
 
+// One reviewed public screenshot is served remotely through the exact
+// Next/Image hostname/path allowlist. Do not relax this to arbitrary URLs.
+const approvedRemoteAssets = new Set([
+  "https://raw.githubusercontent.com/LiamTheMo/HYSB-Bazaar-Tracker/main/shots/landing-1440.png",
+]);
+const hasPublishedAsset = (src) =>
+  approvedRemoteAssets.has(src) || (src.startsWith("/") && existsSync(asset(src)));
+
 test("all project slugs are safe, unique, and featured content exists", () => {
   assert.ok(projects.length > 0);
   const slugs = projects.map(({ slug }) => slug);
@@ -21,19 +29,19 @@ test("all project slugs are safe, unique, and featured content exists", () => {
 test("published media files exist and have useful alternative text", () => {
   for (const project of projects) {
     if (project.cover.kind === "image") {
-      assert.ok(existsSync(asset(project.cover.src)), `Missing cover for ${project.slug}: ${project.cover.src}`);
+      assert.ok(hasPublishedAsset(project.cover.src), `Missing cover for ${project.slug}: ${project.cover.src}`);
       assert.ok(project.cover.alt.trim().length >= 12, `Missing cover description for ${project.slug}`);
     }
     if (project.avatar) {
-      assert.ok(existsSync(asset(project.avatar.src)), `Missing avatar for ${project.slug}`);
+      assert.ok(hasPublishedAsset(project.avatar.src), `Missing avatar for ${project.slug}`);
     }
     for (const image of project.images ?? []) {
-      assert.ok(existsSync(asset(image.src)), `Missing gallery image for ${project.slug}: ${image.src}`);
+      assert.ok(hasPublishedAsset(image.src), `Missing gallery image for ${project.slug}: ${image.src}`);
       assert.ok(image.alt.trim().length >= 12);
     }
     for (const pair of project.beforeAfter ?? []) {
       for (const image of [pair.before, pair.after]) {
-        assert.ok(existsSync(asset(image.src)), `Missing comparison image for ${project.slug}: ${image.src}`);
+        assert.ok(hasPublishedAsset(image.src), `Missing comparison image for ${project.slug}: ${image.src}`);
       }
     }
   }
@@ -53,6 +61,16 @@ test("GitHub links use current repository owner and valid HTTPS URLs", () => {
     }
   }
   assert.ok(links.length >= 5);
+});
+
+test("project curation excludes coursework and Minecraft mod ports", () => {
+  for (const project of projects) {
+    assert.doesNotMatch(project.slug, /minecraft|voxy|carpet|tank-duels|^comp\d/i);
+    if (project.sourceUrl) {
+      const repository = new URL(project.sourceUrl).pathname.split("/")[2] ?? "";
+      assert.doesNotMatch(repository, /^(?:COMP\d|MC-)/i);
+    }
+  }
 });
 
 test("primary social and project links are not duplicated", () => {
