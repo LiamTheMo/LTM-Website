@@ -26,6 +26,29 @@ test("all project slugs are safe, unique, and featured content exists", () => {
   assert.ok(projects.some((project) => project.featured));
 });
 
+test("featured projects remain fixed and use evidence-backed engineering copy", () => {
+  assert.deepEqual(
+    projects.filter((project) => project.featured).map((project) => project.slug),
+    ["this-website", "ltm-todo-app", "ltm-email-service"],
+  );
+  const website = projects.find((project) => project.slug === "this-website");
+  assert.ok(website?.skills?.includes("Fullstack Development"));
+  assert.ok(website?.stack.includes("Cloudflare D1"));
+  assert.match(website?.solution ?? "", /server-side API.*Cloudflare D1/i);
+  assert.ok(website?.engineering?.includes("Database Persistence"));
+
+  for (const project of projects) {
+    const technologies = new Set(project.stack);
+    assert.equal(technologies.size, project.stack.length, `Duplicate technology for ${project.slug}`);
+    assert.ok(project.stack.length >= 1, `Missing technology for ${project.slug}`);
+    if (project.engineering) {
+      assert.ok(project.engineering.length > 0);
+      assert.equal(new Set(project.engineering).size, project.engineering.length);
+      assert.ok(project.engineering.every((tag) => tag.trim().length >= 8));
+    }
+  }
+});
+
 test("published media files exist and have useful alternative text", () => {
   for (const project of projects) {
     if (project.cover.kind === "image") {
