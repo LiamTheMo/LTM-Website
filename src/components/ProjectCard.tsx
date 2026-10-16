@@ -1,7 +1,7 @@
 import Link from "next/link";
 import CoverArt from "@/components/CoverArt";
 import { Tag } from "@/components/ui";
-import { projectCategoryLabel, projectTags } from "@/lib/project-display";
+import { projectCardTags, projectCategoryLabel } from "@/lib/project-display";
 import type { Project } from "@/lib/types";
 
 export default function ProjectCard({
@@ -12,7 +12,7 @@ export default function ProjectCard({
   priority?: boolean;
 }) {
   const category = projectCategoryLabel(project);
-  const tags = projectTags(project);
+  const tags = projectCardTags(project);
 
   return (
     <li>
@@ -41,7 +41,7 @@ export default function ProjectCard({
           </p>
 
           <div className="mt-5 flex flex-wrap gap-2" aria-label="Project tags">
-            {tags.slice(0, 4).map((tag) => (
+            {tags.map((tag) => (
               <Tag key={tag}>{tag}</Tag>
             ))}
           </div>

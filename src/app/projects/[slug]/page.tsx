@@ -220,7 +220,7 @@ export default async function ProjectPage({
             </dl>
 
             <div className="mt-6 border-t border-border pt-5">
-              <p className="text-caption uppercase tracking-[0.1em] text-text-muted">Tools & technologies</p>
+              <p className="text-caption uppercase tracking-[0.1em] text-text-muted">Technology & engineering</p>
               <div className="mt-3 flex flex-wrap gap-2" aria-label="Project tags">
                 {tags.map((tag) => (
                   <Tag key={tag}>{tag}</Tag>

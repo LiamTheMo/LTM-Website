@@ -65,6 +65,22 @@ try {
     const errors = [];
     page.on("pageerror", (error) => errors.push(error.message));
 
+    // These are editorially curated case studies, not an automatic ranking.
+    // Their software engineering tags must remain visible across breakpoints.
+    await page.goto(ORIGIN, { waitUntil: "domcontentloaded" });
+    const featuredSection = page.locator('section[aria-labelledby="featured-work-heading"]');
+    const featuredCards = featuredSection.locator("li");
+    assert.equal(await featuredCards.count(), 3, `${name}: featured selection changed`);
+    for (const [title, practice] of [
+      ["This Website", "Fullstack Architecture"],
+      ["LTM Todo App", "Offline-first Architecture"],
+      ["LTM Email Service", "Authentication & Authorization"],
+    ]) {
+      const card = featuredCards.filter({ has: page.getByRole("heading", { name: title, exact: true }) });
+      assert.equal(await card.count(), 1, `${name}: missing featured project ${title}`);
+      assert.ok((await card.innerText()).includes(practice), `${name}: missing engineering tag ${practice}`);
+    }
+
     for (const route of routes) {
       const response = await page.goto(ORIGIN + route, { waitUntil: "domcontentloaded", timeout: 30000 });
       await page.locator("h1").waitFor({ state: "visible", timeout: 15000 });
