@@ -63,6 +63,16 @@ test("GitHub links use current repository owner and valid HTTPS URLs", () => {
   assert.ok(links.length >= 5);
 });
 
+test("project curation excludes coursework and Minecraft mod ports", () => {
+  for (const project of projects) {
+    assert.doesNotMatch(project.slug, /minecraft|voxy|carpet|tank-duels|^comp\d/i);
+    if (project.sourceUrl) {
+      const repository = new URL(project.sourceUrl).pathname.split("/")[2] ?? "";
+      assert.doesNotMatch(repository, /^(?:COMP\d|MC-)/i);
+    }
+  }
+});
+
 test("primary social and project links are not duplicated", () => {
   assert.equal(new Set(socialLinks.map((link) => link.kind)).size, socialLinks.length);
   assert.ok(projects.every((project) => project.summary?.trim().length > 20));
