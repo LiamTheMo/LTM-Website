@@ -7,32 +7,33 @@ const PROJECT_TAG_ALIASES: Readonly<Record<string, string>> = {
   "Windows troubleshooting": "Windows Troubleshooting",
 };
 
-/**
- * One canonical category label for every project surface.
- * Service-backed projects use the service identity; portfolio-only work uses
- * its confirmed skills. Keeping this here prevents cards, indexes, and case
- * studies from formatting the same project differently.
- */
+/** One category shared by the homepage, projects index and case studies. */
 export function projectCategoryLabel(project: Project): string {
-  return project.services.length > 0
-    ? project.services.map((slug) => SERVICE_META[slug].title).join(" · ")
-    : (project.skills ?? []).join(" · ");
+  const services = project.services.map((slug) => SERVICE_META[slug].title);
+  const skills = project.skills ?? [];
+  return Array.from(new Set([...services, ...skills])).join(" · ");
 }
 
 /**
  * Canonical display tags for project cards and case studies.
  *
- * `Project.stack` remains the factual source data. This layer only normalizes
- * confirmed tag wording and casing, so presentation stays consistent without
- * inferring technologies that have not been documented for a project. Order
- * stays intentional and duplicates are removed.
+ * `Project.stack` lists technologies. `Project.engineering` lists verified
+ * implementation concepts, not marketing buzzwords. Preserve the owner's
+ * intentional order while normalizing established labels and removing repeats.
  */
 export function projectTags(project: Project): string[] {
-  const normalized = project.stack
+  const normalized = [...project.stack, ...(project.engineering ?? [])]
     .map((tag) => PROJECT_TAG_ALIASES[tag] ?? tag.trim())
     .filter(Boolean);
 
   return Array.from(new Set(normalized));
+}
+
+/** Compact card tags: show technologies plus one actual engineering practice. */
+export function projectCardTags(project: Project): string[] {
+  const technologies = project.stack.map((tag) => PROJECT_TAG_ALIASES[tag] ?? tag.trim()).filter(Boolean);
+  const practice = project.engineering?.find((tag) => tag.trim() && !technologies.includes(tag.trim()));
+  return Array.from(new Set([...technologies.slice(0, practice ? 3 : 4), ...(practice ? [practice.trim()] : [])]));
 }
 
 export function countProjectTags(items: readonly Project[]): number {

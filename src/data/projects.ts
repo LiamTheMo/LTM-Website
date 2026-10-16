@@ -14,6 +14,7 @@ export const projects: Project[] = [
     title: "This Website",
     // client: omitted — this is the owner's own business site.
     services: ["websites"],
+    skills: ["Fullstack Development"],
     // Restored the original owner-uploaded portfolio cover image.
     cover: {
       kind: "image",
@@ -21,43 +22,43 @@ export const projects: Project[] = [
       alt: "The orange-and-black portfolio cover artwork with a website mockup and featured work.",
     },
     summary:
-      "A responsive, data-driven developer portfolio featuring project case studies, experience, GitHub activity, and a direct contact path.",
+      "A fullstack Next.js portfolio with typed project content, a serverless visitor-count API, and Cloudflare D1 database persistence.",
     problem:
-      "Project details, technical work, and experience needed a clear home that is easy to browse and maintain as the portfolio grows.",
+      "Technical work needed a fast, accessible portfolio whose content, server-side features, and deployments can evolve without duplicating pages.",
     solution:
-      "Built with Next.js 16, React, TypeScript, and Tailwind CSS. Typed project data powers the homepage and individual case studies. OpenNext deploys to Cloudflare Workers, with public GitHub activity and responsive layouts.",
+      "Built a fullstack Next.js 16 and TypeScript application with reusable React components and typed project models. A server-side API records an approximate, cookie-aware browser-visit aggregate in Cloudflare D1, with same-origin request validation and graceful failure handling. OpenNext deploys the site to Cloudflare Workers.",
     // overview/whatIBuilt/features/role/year: verbatim from
     // individual-project-page-mockup.png, which is owner-authored copy for
     // this specific project — not template filler (see the page's file
     // comment). Every other project below leaves these unset until the owner
     // writes real copy for it.
     overview:
-      "This is my fullstack developer portfolio: a fast, data-driven site for exploring my projects, experience, and technical work, with direct links to public repositories and a contact path.",
+      "A fullstack, data-driven portfolio combining responsive project case studies with server-side API logic and database-backed visitor analytics.",
     whatIBuilt: [
-      "Fully custom Next.js site with App Router",
-      "TypeScript for type safety and scalability",
-      "Tailwind CSS for styling and responsive design",
-      "Deployed on Cloudflare Workers for low-cost, high-performance hosting",
-      "Data-driven project system from typed content files",
+      "Reusable React components and Next.js App Router pages",
+      "Type-safe TypeScript project models shared across portfolio routes",
+      "Server-side visitor-count API with same-origin request validation",
+      "Cloudflare D1 persistence for an approximate, cookie-aware browser count",
+      "Responsive Tailwind CSS UI and OpenNext deployment to Cloudflare Workers",
     ],
     features: [
       {
         icon: "bolt",
-        title: "Fast & Lightweight",
+        title: "Edge-Hosted Application",
         description:
-          "Optimized for performance with minimal bundle size and edge deployment.",
+          "Next.js renders the interface while OpenNext runs the server-side application on Cloudflare Workers.",
       },
       {
         icon: "layers",
-        title: "Scalable Content",
+        title: "Type-safe Content Architecture",
         description:
-          "Projects and services are generated from typed data files for easy updates.",
+          "Reusable components and typed data models keep project cards, case studies, and metadata consistent.",
       },
       {
         icon: "target",
-        title: "Clear Project Stories",
+        title: "Database-backed Visitor API",
         description:
-          "Project pages and clear navigation help visitors explore the work and get in touch.",
+          "A serverless endpoint persists an approximate visitor aggregate to D1 and degrades safely if storage is unavailable.",
       },
     ],
     role: "Design, Development, Deployment",
@@ -73,7 +74,8 @@ export const projects: Project[] = [
     //
     // result: intentionally omitted (the evidence-based content rules) — the site isn't launched with
     // real traffic yet, so there's no conversion number to report.
-    stack: ["Next.js", "TypeScript", "Tailwind CSS", "Cloudflare Workers"],
+    stack: ["Next.js", "TypeScript", "Cloudflare Workers", "Cloudflare D1", "React", "Tailwind CSS"],
+    engineering: ["Fullstack Architecture","Serverless API","Database Persistence","Type-safe Data Models"],
     // Real captures, supplied 2026-08-21 as JPEG — resolves the TODO that
     // used to sit here. `beforeAfter`, not `images`: see the field's own
     // comment on why a flat carousel isn't the right fit for paired
@@ -142,14 +144,15 @@ export const projects: Project[] = [
       alt: "Screenshot of the LTM Todo dashboard with day-by-day planning and calendar navigation.",
     },
     summary:
-      "An ad-free, installable task manager and calendar for desktop, iPhone, and iPad, with offline access and cross-device account sync.",
+      "An offline-first fullstack planner with local persistence, cross-device synchronization, task workflows, and an integrated calendar.",
     problem:
-      "A lightweight personal planner should make it quick to capture tasks and see the day’s schedule without depending on a third-party calendar or adding artificial limits.",
+      "A personal productivity app needs responsive task and calendar interactions that remain usable offline and synchronize reliably between devices.",
     solution:
-      "Built task and project management, first-party calendars, recurring work, reminders, and a review-first batch importer for PDF, DOCX, CSV, text, and course outlines. IndexedDB supports offline editing; account synchronization uses Cloudflare D1 and Durable Objects with per-device sessions.",
+      "Implemented task and calendar state management, recurrence, reminders, and a document-parsing review workflow for PDFs, DOCX, CSV, and text. IndexedDB stores offline changes; Cloudflare D1 and Durable Objects coordinate per-account synchronization, conflict resolution, and device sessions.",
     sourceUrl: "https://github.com/LiamTheMo/LTM-Todo-App",
     externalLink: { href: "https://todo.liamthemo.com", label: "Open LTM Todo" },
-    stack: ["TypeScript", "Next.js", "React", "IndexedDB", "Cloudflare"],
+    stack: ["Next.js", "TypeScript", "IndexedDB", "Cloudflare D1", "Durable Objects", "React", "Web Push"],
+    engineering: ["Offline-first Architecture","Cross-device Synchronization","Conflict Resolution","State Management"],
     icon: "✓",
     featured: true,
   },
@@ -164,14 +167,15 @@ export const projects: Project[] = [
       alt: "Screenshot of LTM Mail’s inbox with mailbox folders, account switcher, and message view.",
     },
     summary:
-      "An installable webmail client with native inboxes, optional Gmail accounts, passkey-protected administration, attachments, and search.",
+      "A fullstack webmail application with authenticated inboxes, passkey-secured administration, Gmail OAuth, and message storage.",
     problem:
-      "A private email product needs a polished client and a backend that can handle message metadata, raw email, attachments, and secure sign-in.",
+      "An email client needs authenticated APIs, reliable message storage, secure account isolation, and auditable administration.",
     solution:
-      "Built a React and TypeScript client backed by Cloudflare Workers, D1, R2, and Email Routing. It supports mailbox switching, threading, drafts, junk/archive/trash, account sessions, Gmail OAuth, and security audit logs. Sensitive administrator actions require fresh passkey approval. Live mailbox data and credentials remain private.",
+      "Designed a React/TypeScript frontend and serverless Cloudflare Workers APIs. D1 manages mailbox metadata, authentication sessions, and audit logs; R2 stores raw messages and attachments. Native email routing and Gmail OAuth support multiple inboxes, while WebAuthn passkeys authorize sensitive admin actions.",
     sourceUrl: "https://github.com/LiamTheMo/LTM-Email-Service",
     externalLink: { href: "https://email.liamthemo.com", label: "Open Webmail" },
-    stack: ["React", "TypeScript", "Vite", "Cloudflare Workers", "D1", "R2"],
+    stack: ["React", "TypeScript", "Cloudflare Workers", "Cloudflare D1", "R2", "WebAuthn", "Vite"],
+    engineering: ["Authentication & Authorization","Serverless APIs","Audit Logging","Session Management"],
     icon: "✉",
     featured: true,
   },
@@ -187,13 +191,14 @@ export const projects: Project[] = [
       alt: "Screenshot of the Hypixel Bazaar Tracker market analytics dashboard.",
     },
     summary:
-      "A read-only Hypixel SkyBlock market dashboard for comparing craft margins, historical prices, and trading volume.",
+      "A fullstack market analytics dashboard with data-ingestion workflows, craft-profitability calculations, and price-history visualization.",
     problem:
       "Bazaar price differences can be misleading without accounting for recipe costs, order liquidity, and shifting demand.",
     solution:
       "Built a Vite/React dashboard and a Cloudflare Worker API with typed pricing calculations, scheduled ingestion, and D1/KV/R2 storage. The repository documents craft profitability, time-of-day price patterns, and volume-adjusted comparisons. Automated ingestion is currently paused to control D1 usage, so live-data freshness is not guaranteed.",
     sourceUrl: "https://github.com/LiamTheMo/HYSB-Bazaar-Tracker",
-    stack: ["TypeScript", "React", "Vite", "Cloudflare Workers", "D1", "KV", "R2"],
+    stack: ["TypeScript", "React", "Cloudflare Workers", "Cloudflare D1", "KV", "R2", "Vite"],
+    engineering: ["Data Ingestion Pipeline","Time-series Analytics","Domain Modeling"],
     featured: false,
   },
   {
@@ -211,7 +216,7 @@ export const projects: Project[] = [
       alt: "Fuse Factory game thumbnail: the game logo above three cube-shaped Boomie characters with lit fuses, in a factory setting with colored crates.",
     },
     summary:
-      "A Roblox game in active development, inspired by a Super Mario Bros. DS mini-game where players sort bob-ombs before they go off — reworked into its own standalone, round-based game.",
+      "An in-development Roblox arcade game using event-driven spawning, modular client/server systems, and weighted item drops.",
     problem:
       "The mini-game it's inspired by only exists as a few minutes inside a much bigger game. There's no standalone version of just that loop: things spawning faster and faster while you sort them correctly before time runs out.",
     solution:
@@ -222,7 +227,8 @@ export const projects: Project[] = [
     // built, but the game isn't finished. Pattern-based movement AI for
     // boomies is explicitly a planned feature, not a built one — do not
     // reword `solution` to imply it already exists.
-    stack: ["Luau"],
+    stack: ["Luau", "Roblox"],
+    engineering: ["Event-driven Architecture","Client–Server Systems","Weighted RNG"],
     // TODO(owner): confirm whether coins/progress persist via DataStore once
     // settled, and name any other tools/services worth calling out here.
     //
@@ -243,13 +249,14 @@ export const projects: Project[] = [
       alt: "Illustration of droppers and processing machines connected by a conveyor belt.",
     },
     summary:
-      "An in-development Roblox factory game about rolling machines, assembling production lines, and maximizing item value.",
+      "A Roblox factory simulation built around weighted randomization, persistent machine placement, and data-driven production chains.",
     problem:
       "Factory games can lose their focus to oversized menus and unrelated progression systems. Tiny Factory is designed to make the production chain itself the main attraction.",
     solution:
       "The Luau project centers on weighted machine rolls, placement, conveyors, droppers, upgraders, sellers, and factory persistence. Its v1.00 MVP remains incomplete; visuals, mobile usability, economy balance, and saving reliability still need validation.",
     sourceUrl: "https://github.com/LiamTheMo/RBLX-Tiny-Factory",
     stack: ["Luau", "Roblox"],
+    engineering: ["Weighted Randomization","Game-state Persistence","Simulation Systems"],
     featured: false,
   },
   {
@@ -262,12 +269,13 @@ export const projects: Project[] = [
       alt: "Illustration of toy-like tanks and a ricocheting projectile from an elevated angle.",
     },
     summary:
-      "An in-development Roblox tank-combat dungeon crawler with ricochets, tank collection, world progression, and co-op-oriented PvE.",
+      "A modular Roblox tank-combat roguelite with server-authoritative gameplay, client-side movement, ricochet systems, and persistent progression.",
     problem:
       "Arcade tank combat needs responsive controls and readable projectile bounces while supporting progression beyond individual matches.",
     solution:
       "Built modular, server-authoritative combat systems with responsive client movement, an elevated follow camera, room-based levels, tank collection, equipment, and run upgrades. World 1 content and a six-station lobby are implemented; published-place device, multiplayer, and lobby validation remains open.",
     stack: ["Luau", "Roblox", "Rojo"],
+    engineering: ["Server-authoritative Combat","Client–Server Architecture","Modular Game Systems"],
     featured: false,
   },
   {
@@ -335,7 +343,7 @@ export const projects: Project[] = [
     // client: omitted. No restaurant name has been cleared for public use.
     services: ["automation", "excel-data"],
     summary:
-      "A Python PDF parser that turns restaurant server-performance reports into structured summaries automatically.",
+      "A Python reporting automation pipeline that extracts PDF performance data, transforms it, and generates structured summaries.",
     problem:
       "Server-performance reporting arrives as long PDF documents, making it difficult to review and compare the information efficiently.",
     // TODO(owner): sharpen this once confirmed — what system the raw export
@@ -365,6 +373,7 @@ export const projects: Project[] = [
     //            { label: "Time per week (before)", value: "..." }
     //            { label: "Time per week (after)",  value: "..." }
     stack: ["Python"],
+    engineering: ["Data Extraction","ETL Workflow","Report Automation"],
     // TODO(owner): confirm the rest of the stack (e.g. the library used to read
     // the export, the input file format — .csv vs .xlsx — and what generates
     // the final report).
@@ -409,6 +418,7 @@ export const projects: Project[] = [
       "11 desktops built to date, plus an ongoing stream of repairs and upgrades.",
     metrics: [{ label: "Computers built", value: "11" }],
     stack: ["PC hardware", "BIOS configuration", "Software", "Windows troubleshooting"],
+    engineering: ["Hardware Diagnostics","System Integration"],
     // images: intentionally omitted — no photos on hand yet (the evidence-based content rules prefers a
     // real screenshot over no image; same applies to build photos).
     featured: false,
@@ -426,7 +436,7 @@ export const projects: Project[] = [
       alt: "Illustrated violet crystal representing the fantasy setting of Echo Realms.",
     },
     summary:
-      "A Roblox dungeon crawler built around reusable systems, readable enemy attacks, zone-based spawning, phased bosses, and per-item chance loot.",
+      "A modular Roblox dungeon crawler with state-driven enemy AI, telegraphed attacks, zone-based spawning, and probability-based loot.",
     problem:
       "Wanted a dungeon crawler where the systems underneath — enemy AI, spawning, bosses, loot — are built to be reused and extended rather than one-off scripts per encounter, and where combat is readable: a player should be able to see an attack coming and react to it, not just get hit.",
     solution:
@@ -436,6 +446,7 @@ export const projects: Project[] = [
     // currently on hold — a game at this scope is hard to build solo. Do not
     // reword `solution` to imply it's a finished, content-complete game.
     stack: ["Luau"],
+    engineering: ["Modular AI Systems","Combat State Machines","Loot Probability"],
     // images: intentionally omitted — no screenshots yet.
     featured: false,
   },
