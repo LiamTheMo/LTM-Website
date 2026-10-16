@@ -65,12 +65,13 @@ export interface Project {
    */
   services: ServiceSlug[];
   /**
-   * Freeform tags shown in place of service chips when `services` is empty.
-   * Plain (non-colour) chips on purpose — §9.2's identity colours are
-   * reserved for the five real service lines, not skills that aren't for
-   * sale.
+   * Project discipline labels. For a service-backed project, these may add
+   * a distinct engineering discipline (e.g. Fullstack Development) without
+   * changing its service classification. Plain, non-colour labels.
    */
   skills?: string[];
+  /** Verified software-engineering approaches used by this project, distinct from technology stack names. */
+  engineering?: string[];
   /** Emoji for a `kind: "tile"` cover when `services` is empty, so there is no service colour or icon to build the tile from. Ignored otherwise. */
   icon?: string;
   /** An off-site destination for the work itself (e.g. a YouTube channel) — rendered as a link on the case study page. */
