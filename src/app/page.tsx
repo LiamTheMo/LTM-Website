@@ -39,7 +39,7 @@ export default function Home() {
             id="featured-work-heading"
             eyebrow="Selected work"
             title="Featured Work"
-            description="A selection of software, game, and development projects."
+            description="Fullstack applications and selected engineering work, from interfaces and APIs to data persistence, deployment, and game systems."
           />
           <LinkButton href="/projects" variant="ghost" size="sm">
             View More
