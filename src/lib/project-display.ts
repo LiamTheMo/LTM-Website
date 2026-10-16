@@ -7,11 +7,13 @@ const PROJECT_TAG_ALIASES: Readonly<Record<string, string>> = {
   "Windows troubleshooting": "Windows Troubleshooting",
 };
 
-/** One category shared by the homepage, projects index and case studies. */
+/** One category shared by the homepage, projects index and case studies.
+ * Show a project\'s discipline before its service type: Fullstack Development • Websites.
+ */
 export function projectCategoryLabel(project: Project): string {
   const services = project.services.map((slug) => SERVICE_META[slug].title);
   const skills = project.skills ?? [];
-  return Array.from(new Set([...services, ...skills])).join(" · ");
+  return Array.from(new Set([...skills, ...services])).join(" • ");
 }
 
 /**
