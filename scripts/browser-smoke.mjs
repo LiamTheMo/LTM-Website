@@ -79,6 +79,9 @@ try {
       const card = featuredCards.filter({ has: page.getByRole("heading", { name: title, exact: true }) });
       assert.equal(await card.count(), 1, `${name}: missing featured project ${title}`);
       assert.ok((await card.innerText()).includes(practice), `${name}: missing engineering tag ${practice}`);
+      if (title === "This Website") {
+        assert.ok((await card.innerText()).includes("Fullstack Development • Websites"), `${name}: incorrect portfolio category order`);
+      }
     }
 
     for (const route of routes) {
