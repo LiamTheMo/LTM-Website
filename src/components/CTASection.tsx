@@ -1,7 +1,5 @@
 import ArrowUpRightIcon from "@/components/ArrowUpRightIcon";
-import GlowBorder from "@/components/GlowBorder";
-import { Container, LinkButton } from "@/components/ui";
-import { warmPanel } from "@/lib/glow";
+import { LinkButton, Section } from "@/components/ui";
 import { CTA } from "@/lib/nav";
 import type { ServiceSlug } from "@/lib/types";
 
@@ -11,58 +9,61 @@ interface CTASectionProps {
   ctaLabel?: string;
   secondary?: { href: string; label: string };
   topic?: ServiceSlug;
-  tight?: boolean;
-  filled?: boolean;
 }
 
+/**
+ * Secondary-page closing CTA. Keep its layout in step with the homepage's
+ * Work With Me section rather than isolating it in a separate glowing card.
+ */
 export default function CTASection({
   title = "Tell me what you're trying to get done",
   description = "Describe the problem in plain words. I'll reply within one business day with what it would take.",
   ctaLabel,
   secondary,
   topic,
-  tight = false,
-  filled = false,
 }: CTASectionProps) {
   const ctaHref = topic ? `${CTA.href}?topic=${topic}` : CTA.href;
 
   return (
-    <section aria-labelledby="cta-heading">
-      <Container className={tight ? "pb-8" : "py-8"}>
-        <div
-          className="relative flex flex-col gap-5 rounded-[var(--radius-card)] p-[var(--space-card)] sm:flex-row sm:items-center sm:justify-between"
-          style={{ background: warmPanel({ peak: 14 }) }}
-        >
-          <GlowBorder />
-
-          <div>
-            <h2 id="cta-heading" className="max-w-[26ch] text-card text-text">
-              {title}
-            </h2>
-            <p className="mt-2 max-w-[70ch] whitespace-pre-line text-body-secondary text-text-muted">
-              {description}
-            </p>
-          </div>
-
-          <div className="flex flex-col gap-2 sm:flex-row sm:items-center">
-            <LinkButton
-              href={ctaHref}
-              variant={filled ? "primary" : "secondary"}
-              size="lg"
-              className="group sm:min-w-[220px]"
-            >
-              {ctaLabel ?? CTA.label}
-              <ArrowUpRightIcon className="h-4 w-4 shrink-0 text-accent transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
-            </LinkButton>
-
-            {secondary ? (
-              <LinkButton href={secondary.href} variant="ghost" size="md">
-                {secondary.label}
-              </LinkButton>
-            ) : null}
-          </div>
+    <Section
+      spacing="compact"
+      aria-labelledby="cta-heading"
+      className="border-t border-border/70"
+    >
+      <div className="flex flex-col gap-6 sm:flex-row sm:items-end sm:justify-between sm:gap-10">
+        <div className="min-w-0 max-w-2xl">
+          <p className="text-metadata font-medium text-accent">Collaboration</p>
+          <h2 id="cta-heading" className="mt-2 text-section text-text">
+            {title}
+          </h2>
+          <p className="mt-3 whitespace-pre-line text-body-secondary text-text-muted">
+            {description}
+          </p>
         </div>
-      </Container>
-    </section>
+
+        <div className="flex w-full flex-col gap-2 sm:w-auto sm:shrink-0 sm:items-end">
+          <LinkButton
+            href={ctaHref}
+            variant="primary"
+            size="lg"
+            className="group w-full sm:w-auto"
+          >
+            {ctaLabel ?? CTA.label}
+            <ArrowUpRightIcon className="h-4 w-4 shrink-0 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
+          </LinkButton>
+
+          {secondary ? (
+            <LinkButton
+              href={secondary.href}
+              variant="ghost"
+              size="sm"
+              className="w-full sm:w-auto"
+            >
+              {secondary.label}
+            </LinkButton>
+          ) : null}
+        </div>
+      </div>
+    </Section>
   );
 }
